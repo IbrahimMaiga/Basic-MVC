@@ -1,0 +1,110 @@
+package parser;
+
+import execption.InvalidFormatException;
+
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+/**
+ * @author Ibrahim Maïga.
+ */
+
+public class YMLParser {
+
+    private static final String SPACES = "    ";
+    private static final String TAB = "  ";
+    private final String CLASS = "class";
+
+    private FileReader fileReader;
+    private BufferedReader buf;
+
+    public YMLParser(FileReader fileReader){
+        this.fileReader = fileReader;
+        this.buf = new BufferedReader(this.fileReader);
+    }
+
+    public YMLParser() throws FileNotFoundException {
+        this(new FileReader("resource/config/connection/default.yml"));
+    }
+
+    private ArrayList<ArrayList<String>> load(ArrayList<String> array){
+
+        ArrayList<ArrayList<String>> arrays = new ArrayList<>();
+        ArrayList<String> list = new ArrayList<>();
+        boolean first = true;
+        for (String s : array) {
+            if (first && !s.startsWith("default")){
+                try {
+                    throw new InvalidFormatException("Invalid yml format");
+                } catch (InvalidFormatException e) {e.printStackTrace();}
+            }
+            else{
+                if (first) first = !first;
+                if (s.startsWith(SPACES + "name") || s.startsWith(TAB + "name")){
+                    if (!list.isEmpty()){
+                        arrays.add(list);
+                        list = new ArrayList<>();
+                    }
+                    list.add(s.trim());
+                }
+                else{
+                    if (is_correct_child(s)){
+                        list.add(s.trim());
+                    }
+                }
+            }
+        }
+        arrays.add(list);
+        return arrays;
+    }
+
+    private boolean is_correct_child(String child){
+        Pattern pattern = Pattern.compile(SPACES + "|\\n|" + TAB);
+        Matcher matcher = pattern.matcher(child);
+        return matcher.find();
+    }
+
+    private Map<String, Map<String, String>> parse(){
+
+        Map<String, Map<String, String>> map = new HashMap<>();
+        ArrayList<String> array = new ArrayList<>();
+        this.buf.lines().forEach(array::add);
+        ArrayList<ArrayList<String>> arrays = load(array);
+
+        for (ArrayList<String> ar : arrays){
+
+            String key = "";
+            Map<String, String> strMap = new HashMap<>();
+            boolean first = true;
+
+            for (String s : ar){
+                String[] strTab = s.split(":");
+                if (first){
+                    key = strTab[1].trim();
+                    first = !first;
+                }
+                else{
+                    strMap.put(strTab[0].trim(), strTab[1].trim());
+                }
+            }
+
+            map.put(key, strMap);
+        }
+
+        return map;
+    }
+
+    private Map<String, String> parse(String value){
+        return this.parse().get(value);
+    }
+
+    public String get(String value) {
+        return this.parse(value).get(CLASS);
+    }
+}

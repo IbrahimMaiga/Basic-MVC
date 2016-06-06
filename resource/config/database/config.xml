@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<databases  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="schema.xsd">
+    <database name="default">
+        <host>jdbc:mysql://localhost:3306/defaultdb</host>
+        <user>root</user>
+        <password></password>
+    </database>
+    <database name="userdb">
+        <host>jdbc:mysql://localhost:3306/userdb</host>
+        <user>root</user>
+        <password></password>
+    </database>
+</databases>
