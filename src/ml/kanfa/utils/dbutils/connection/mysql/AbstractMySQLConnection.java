@@ -1,5 +1,6 @@
 package ml.kanfa.utils.dbutils.connection.mysql;
 
+import com.sun.xml.internal.bind.v2.TODO;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import ml.kanfa.parser.XMLParser;
@@ -25,11 +26,6 @@ public abstract class AbstractMySQLConnection extends AbstractConnection {
     }
 
     @Override protected void displayError() {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setContentText("Erreur de connexion a la base de données");
-        alert.setHeaderText("Erreur");
-        alert.setTitle("Connexion impossible");
-        alert.showAndWait();
         if ((this instanceof IUser) && !this.fistConnection){
             Platform.exit();
         }
