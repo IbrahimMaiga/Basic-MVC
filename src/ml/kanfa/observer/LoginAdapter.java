@@ -6,7 +6,7 @@ import ml.kanfa.entity.User;
  * @author Kanfa.
  */
 
-public abstract class LoginInterfaceAdapter extends ObserverAdapter implements LoginInterface, ErrorInterface{
+public abstract class LoginAdapter extends ObserverAdapter implements ILogin, IError {
 
     @Override public void connect(User user) {}
 
