@@ -20,6 +20,9 @@ public abstract class MySQLManager<T> extends AbstractManager<T> {
 
     private boolean canReload = false;
 
+    private static final String HOST = "127.0.0.1" ;
+    private static final int PORT = 80;
+
     protected PreparedStatement preparedStatement;
     protected Statement statement;
     protected ResultSet resultSet;
@@ -42,15 +45,15 @@ public abstract class MySQLManager<T> extends AbstractManager<T> {
     }
 
     private void checkState(){
-        try(Socket socket = new Socket("", 80)) {
+        try(Socket socket = new Socket(HOST, PORT)) {
             this.connection_failed = false;
         } catch (IOException e) {
             this.connection_failed = true;
             canReload = true;
-            try { this.connection.close(); } catch (SQLException e1) {}
+            try { this.connection.close(); } catch (SQLException ex) {}
         }
 
-        if (!this.connection_failed && canReload){
+        if (!this.connection_failed && this.canReload){
             this.connection = this.abstractConnection.getConnection(true);
         }
     }
