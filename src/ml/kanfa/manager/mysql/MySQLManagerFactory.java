@@ -8,15 +8,15 @@ import ml.kanfa.manager.AbstractManagerFactory;
 
 public class MySQLManagerFactory extends AbstractManagerFactory {
 
-    @Override protected String entityPath() {
+    @Override protected String getEMPath() {
         return "ml.kanfa.manager.mysql.em";
     }
 
-    @Override protected String suffix() {
+    @Override protected String getSuffix() {
         return "Manager";
     }
 
-    @Override protected String connectionType() {
+    @Override protected String getConnectionType() {
         return "mysql";
     }
 }
