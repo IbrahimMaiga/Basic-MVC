@@ -2,12 +2,18 @@ package ml.kanfa.utils.dbutils.connection.mysql;
 
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
-import ml.kanfa.utils.dbutils.UserInterface;
+import ml.kanfa.parser.XMLParser;
+import ml.kanfa.utils.dbutils.IUser;
 import ml.kanfa.utils.dbutils.connection.AbstractConnection;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
 /**
  * @author Kanfa.
  */
+
 public abstract class AbstractMySQLConnection extends AbstractConnection {
 
     AbstractMySQLConnection(){
@@ -24,8 +30,18 @@ public abstract class AbstractMySQLConnection extends AbstractConnection {
         alert.setHeaderText("Erreur");
         alert.setTitle("Connexion impossible");
         alert.showAndWait();
-        if ((this instanceof UserInterface) && !this.fistConnection){
+        if ((this instanceof IUser) && !this.fistConnection){
             Platform.exit();
         }
     }
+
+    @Override protected Connection getDriverManagerConnection() throws SQLException {
+        return DriverManager.getConnection(
+                getParser().getHost(),
+                getParser().getUsername(),
+                getParser().getPassword()
+        );
+    }
+
+    protected abstract XMLParser getParser();
 }
