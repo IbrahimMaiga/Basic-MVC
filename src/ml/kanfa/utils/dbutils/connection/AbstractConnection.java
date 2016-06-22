@@ -1,5 +1,6 @@
 package ml.kanfa.utils.dbutils.connection;
 
+import javafx.application.Platform;
 import ml.kanfa.parser.XMLParser;
 
 import java.sql.Connection;
@@ -33,15 +34,11 @@ public abstract class AbstractConnection {
         }
         if ((this.instance == null && !this.error)) {
             try {
-                this.instance = DriverManager.getConnection
-                        (
-                            getParser().getHost(),
-                            getParser().getUsername(),
-                            getParser().getPassword()
-                        );
+                this.instance = this.getDriverManagerConnection();
                 this.fistConnection = true;
             } catch (SQLException e) {
                 this.error = true;
+                Platform.exit();
             }
             if (this.error) this.displayError();
         }
@@ -59,6 +56,5 @@ public abstract class AbstractConnection {
 
     protected abstract void displayError();
     protected abstract void loadLibrary() throws ClassNotFoundException;
-    protected abstract XMLParser getParser();
-
+    protected abstract Connection getDriverManagerConnection() throws SQLException;
 }
