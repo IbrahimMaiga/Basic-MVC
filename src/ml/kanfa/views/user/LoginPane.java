@@ -20,7 +20,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import ml.kanfa.model.Rb;
 import ml.kanfa.model.UserModel;
-import ml.kanfa.observer.LoginInterfaceAdapter;
+import ml.kanfa.observer.LoginAdapter;
 import ml.kanfa.views.app.AppStage;
 
 /**
@@ -120,7 +120,7 @@ public class LoginPane extends BorderPane{
     }
 
 
-    public class ConnectAction extends LoginInterfaceAdapter{
+    public class ConnectAction extends LoginAdapter {
 
         @Override public void connect(User user) {
             close();
