@@ -17,8 +17,4 @@ public class ApplicationComponent extends Stage{
     public ApplicationComponent(){
         this(new Rb());
     }
-
-    public Rb getRb(){
-        return this.rb;
-    }
 }
