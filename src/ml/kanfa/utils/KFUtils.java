@@ -13,21 +13,16 @@ public class KFUtils {
         else return Character.toString(str.charAt(0)).toUpperCase().concat(str.substring(1));
     }
 
-    public static String capitalize(String str){
-       return format(str, ' ');
-    }
-
     public static String _camlCase(String str){
         return format(str, '_');
     }
 
     private static String format(String str, char delimiter){
-        String s = String.valueOf(delimiter);
-        if (str.split(s).length == 1) return ucfirst(str);
+        if (str.split(String.valueOf(delimiter)).length == 1) return ucfirst(str);
         else{
-            String current = (trim(str, delimiter)).substring(0, str.indexOf(s));
-            str = trim(str.substring(str.indexOf(s)), delimiter);
-            return ucfirst(current) + (delimiter == '_' ? "" : s) + format(str, delimiter);
+            String current = (trim(str, delimiter)).substring(0, str.indexOf(delimiter));
+            str = trim(str.substring(str.indexOf(delimiter)), delimiter);
+            return ucfirst(current) + (delimiter == '_' ? "" : delimiter) + format(str, delimiter);
         }
     }
 
@@ -43,10 +38,6 @@ public class KFUtils {
             len--;
         }
         return ((st > 0) || (len < str.length())) ? str.substring(st, len) : str;
-    }
-
-    private static String trim(String str){
-        return trim(str, ' ');
     }
 
 }
