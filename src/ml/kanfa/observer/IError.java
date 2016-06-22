@@ -5,6 +5,5 @@ package ml.kanfa.observer;
  */
 
 public interface IError {
-
     void showError(String message);
 }
