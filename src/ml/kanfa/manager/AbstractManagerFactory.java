@@ -21,7 +21,7 @@ public abstract class AbstractManagerFactory {
         String format_class_name = class_name.split("_").length >= 2 ?
                                         KFUtils._camlCase(class_name) :
                                         KFUtils.ucfirst(class_name);
-        String name = entityPath() + "." + format_class_name + suffix();
+        String name = getEMPath() + "." + format_class_name + getSuffix();
         AbstractManager abstractManager = null;
         AbstractConnection param_instance;
         Class param_class;
@@ -32,7 +32,7 @@ public abstract class AbstractManagerFactory {
             Constructor constructor = c.getConstructor(params);
             Annotation[] annotations = c.getAnnotations();
             if (annotations == null){
-                param_class = Class.forName((new YMLParser()).get(connectionType()));
+                param_class = Class.forName((new YMLParser()).get(getConnectionType()));
             }
             else{
                 param_class = ((ManagerConnection)annotations[0]).value();
@@ -54,10 +54,10 @@ public abstract class AbstractManagerFactory {
         }
     }
 
-    protected abstract String entityPath();
+    protected abstract String getEMPath();
 
-    protected abstract String suffix();
+    protected abstract String getSuffix();
 
-    protected abstract String connectionType();
+    protected abstract String getConnectionType();
 
 }
