@@ -15,7 +15,7 @@ import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.BorderPane;
 import ml.kanfa.model.DeconnectionType;
 import ml.kanfa.model.UserModel;
-import ml.kanfa.observer.LoginInterfaceAdapter;
+import ml.kanfa.observer.LoginAdapter;
 import ml.kanfa.utils.verifier.WindowOpenedVerifier;
 import ml.kanfa.views.user.Login;
 
@@ -89,7 +89,7 @@ public class AppStage extends ApplicationComponent {
         this.hide();
     }
 
-    public class DeconnectionAction extends LoginInterfaceAdapter{
+    public class DeconnectionAction extends LoginAdapter {
 
         @Override public void deconnect(User currentUser, boolean type) {
             boolean can = true;
