@@ -4,7 +4,7 @@ package ml.kanfa.observer;
  * @author Kanfa.
  */
 
-public interface ErrorInterface {
+public interface IError {
 
     void showError(String message);
 }
