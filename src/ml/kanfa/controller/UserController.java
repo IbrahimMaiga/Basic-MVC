@@ -5,7 +5,7 @@ import ml.kanfa.model.AbstractModel;
 import ml.kanfa.model.DeconnectionType;
 import ml.kanfa.model.Rb;
 import ml.kanfa.model.UserModel;
-import ml.kanfa.observer.LoginInterface;
+import ml.kanfa.observer.ILogin;
 import ml.kanfa.views.user.LoginPane;
 
 /**
@@ -36,13 +36,13 @@ public class UserController extends AbstractController{
         }
     }
 
-    public void control(LoginInterface loginInterface, DeconnectionType type){
+    public void control(ILogin ILogin, DeconnectionType type){
         switch (type){
             case DECONNECT:
-                this.userModel.notifyDeconnection(loginInterface, this.currentUser, true);
+                this.userModel.notifyDeconnection(ILogin, this.currentUser, true);
                 break;
             case QUIT:
-                this.userModel.notifyDeconnection(loginInterface, this.currentUser, false);
+                this.userModel.notifyDeconnection(ILogin, this.currentUser, false);
                 break;
             default:
         }
