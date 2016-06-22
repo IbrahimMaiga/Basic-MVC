@@ -3,7 +3,7 @@ package ml.kanfa.model;
 import ml.kanfa.entity.User;
 import ml.kanfa.manager.AbstractManagerFactory;
 import ml.kanfa.manager.mysql.em.UserManager;
-import ml.kanfa.observer.LoginInterface;
+import ml.kanfa.observer.ILogin;
 import ml.kanfa.observer.Observer;
 
 import java.util.List;
@@ -17,11 +17,11 @@ public class UserModel extends AbstractModel<User>{
     private UserManager userManager = (UserManager)AbstractManagerFactory.getManagerFactory(AbstractManagerFactory.MYSQL_MANAGER_FACTORY).getManager("user");
 
     public void notifyConnection(Observer observer, User user) {
-            ((LoginInterface)observer).connect(user);
+            ((ILogin)observer).connect(user);
     }
 
     public void notifyDeconnection(Observer observer, User user, boolean exit) {
-            ((LoginInterface)observer).deconnect(user, exit);
+            ((ILogin)observer).deconnect(user, exit);
     }
 
     @Override public void add(User user) {
