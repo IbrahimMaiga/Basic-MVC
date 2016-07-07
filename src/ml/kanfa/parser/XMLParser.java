@@ -25,7 +25,7 @@ public class XMLParser {
 
     public XMLParser(Database database){
         this.database = database;
-        this.document = XMLInstance.getInstance(CONFIG_PATH);
+        this.document = ml.kanfa.parser.Document.getInstance(CONFIG_PATH);
         this.root = this.document.getDocumentElement();
         this.nodeList = this.root.getElementsByTagName(TAG_NAME);
     }
