@@ -1,6 +1,5 @@
 package ml.kanfa.parser;
 
-import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -13,15 +12,15 @@ import java.io.IOException;
  * @author Kanfa.
  */
 
-public class XMLInstance {
+public class Document {
 
-    private static Document document = null;
+    private static org.w3c.dom.Document document = null;
 
     private static String currentPath = "";
 
-    private XMLInstance(){}
+    private Document(){}
 
-    public static Document getInstance(String path){
+    public static org.w3c.dom.Document getInstance(String path){
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder;
 
