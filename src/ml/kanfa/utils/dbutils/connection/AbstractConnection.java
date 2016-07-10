@@ -1,10 +1,6 @@
 package ml.kanfa.utils.dbutils.connection;
 
-import javafx.application.Platform;
-import ml.kanfa.parser.XMLParser;
-
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 
 /**
@@ -30,7 +26,7 @@ public abstract class AbstractConnection {
 
     public Connection getConnection(boolean reload){
         if (reload){
-           initParams();
+            initParams();
         }
         if ((this.instance == null && !this.error)) {
             try {
@@ -38,7 +34,6 @@ public abstract class AbstractConnection {
                 this.fistConnection = true;
             } catch (SQLException e) {
                 this.error = true;
-                Platform.exit();
             }
             if (this.error) this.displayError();
         }

@@ -8,6 +8,7 @@ import ml.kanfa.utils.dbutils.Database;
  */
 public class DefaultConnection extends AbstractMySQLConnection {
 
+    private static DefaultConnection _instance = new DefaultConnection();
 
     public DefaultConnection(){}
 
