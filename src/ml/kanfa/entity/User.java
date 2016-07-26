@@ -10,7 +10,7 @@ public class User {
 
     private String username;
 
-    private String password;
+    private char[] password;
 
     private boolean online;
 
@@ -38,12 +38,16 @@ public class User {
         this.username = username;
     }
 
-    public String getPassword() {
+    public char[] getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
+    public void setPassword(char[] password) {
         this.password = password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password.toCharArray();
     }
 
     public boolean isOnline() {
