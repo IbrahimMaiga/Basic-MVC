@@ -1,4 +1,4 @@
-package ml.kanfa.views.user;
+package ml.kanfa.views.fx.user;
 
 import ml.kanfa.controller.UserController;
 import ml.kanfa.entity.User;
@@ -20,8 +20,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import ml.kanfa.model.Rb;
 import ml.kanfa.model.UserModel;
-import ml.kanfa.observer.LoginAdapter;
-import ml.kanfa.views.app.AppStage;
+import ml.kanfa.observer.LoginStub;
+import ml.kanfa.views.fx.app.AppStage;
 
 /**
  * @author Kanfa.
@@ -77,9 +77,9 @@ public class LoginPane extends BorderPane{
         this.setBottom(box);
         this.errorLabel.setTextFill(Color.RED);
         this.errorLabel.setFont(new Font("Verdana", 14));
-        this.connectButton = new Button(rb.get("LoginPane.connectBtn.text"));
-        this.loginField.setPromptText(rb.get("LoginPane.textfield.prompt_text"));
-        this.passwordField.setPromptText(rb.get("LoginPane.password_field.prompt_text"));
+        this.connectButton = new Button(rb.get("Login.connectBtn.text"));
+        this.loginField.setPromptText(rb.get("Login.textfield.prompt_text"));
+        this.passwordField.setPromptText(rb.get("Login.password_field.prompt_text"));
         this.passwordField.disableProperty().bind(this.loginField.textProperty().isEmpty());
         this.connectButton.disableProperty().bind(this.loginField.textProperty().isEmpty().or(this.passwordField.textProperty().isEmpty()));
         this.connectButton.setOnMouseClicked(event -> {
@@ -120,7 +120,7 @@ public class LoginPane extends BorderPane{
     }
 
 
-    public class ConnectAction extends LoginAdapter {
+    public final class ConnectAction extends LoginStub {
 
         @Override public void connect(User user) {
             close();

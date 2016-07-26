@@ -1,6 +1,6 @@
 package ml.kanfa.manager.mysql.em;
 
-import ml.kanfa.annot.ManagerConnection;
+import ml.kanfa.annot.ConnectionManager;
 import ml.kanfa.entity.User;
 import ml.kanfa.manager.AbstractManagerFactory;
 import ml.kanfa.manager.mysql.MySQLManager;
@@ -17,7 +17,7 @@ import java.util.List;
  * @author Kanfa.
  */
 
-@ManagerConnection(UserConnection.class)
+@ConnectionManager(UserConnection.class)
 public class UserManager extends MySQLManager<User> {
 
     private UserGroupManager userGroupManager;
@@ -45,7 +45,7 @@ public class UserManager extends MySQLManager<User> {
         try{
             this.preparedStatement = this.connection.prepareStatement("INSERT INTO users (username, password, online, group_id) VALUES (?, ?, ?, ?)");
             this.preparedStatement.setString(1, object.getUsername());
-            this.preparedStatement.setString(2, Encryt.md5(object.getPassword()));
+            this.preparedStatement.setString(2, Encryt.md5(new String(object.getPassword())));
             this.preparedStatement.setBoolean(3, object.isOnline());
             this.preparedStatement.setInt(4, object.getGroup().getId());
             this.preparedStatement.execute();
@@ -60,7 +60,7 @@ public class UserManager extends MySQLManager<User> {
             this.preparedStatement = this.connection.prepareStatement("UPDATE users SET username = ?, password = ?, online = ?, group_id = ? " +
                                                                               "WHERE id = ?");
             this.preparedStatement.setString(1, object.getUsername());
-            this.preparedStatement.setString(2, Encryt.md5(object.getPassword()));
+            this.preparedStatement.setString(2, Encryt.md5(new String(object.getPassword())));
             this.preparedStatement.setBoolean(3, object.isOnline());
             this.preparedStatement.setInt(4, object.getGroup().getId());
             this.preparedStatement.setInt(5, object.getId());
@@ -82,7 +82,7 @@ public class UserManager extends MySQLManager<User> {
             if (this.resultSet.next()){
                 user.setId(id);
                 user.setUsername(this.resultSet.getString("username"));
-                user.setPassword(this.resultSet.getString("password"));
+                user.setPassword(this.resultSet.getString("password").toCharArray());
                 user.setOnline(this.resultSet.getBoolean("online"));
                 user.setGroup(this.userGroupManager.find(this.resultSet.getInt("group_id")));
             }
@@ -103,7 +103,7 @@ public class UserManager extends MySQLManager<User> {
                 User user = new User();
                 user.setId(this.resultSet.getInt("id"));
                 user.setUsername(this.resultSet.getString("username"));
-                user.setPassword(this.resultSet.getString("password"));
+                user.setPassword(this.resultSet.getString("password").toCharArray());
                 user.setOnline(this.resultSet.getBoolean("online"));
                 user.setGroup(this.userGroupManager.find(this.resultSet.getInt("group_id")));
                 users.add(user);
@@ -120,7 +120,7 @@ public class UserManager extends MySQLManager<User> {
         try{
             this.preparedStatement = this.connection.prepareStatement("SELECT * FROM users WHERE username = ? AND password = ?");
             this.preparedStatement.setString(1, user.getUsername());
-            this.preparedStatement.setString(2, Encryt.md5(user.getPassword()));
+            this.preparedStatement.setString(2, Encryt.md5(new String(user.getPassword())));
             this.resultSet = this.preparedStatement.executeQuery();
              if (this.resultSet.next()){
                  return true;
@@ -133,12 +133,12 @@ public class UserManager extends MySQLManager<User> {
         return false;
     }
 
-    public User createUser(String username, String password){
+    public User createUser(String username, char[] password){
         User user = new User();
         try{
             this.preparedStatement = this.connection.prepareStatement("SELECT * FROM users WHERE username = ? AND password = ?");
             this.preparedStatement.setString(1, username);
-            this.preparedStatement.setString(2, Encryt.md5(password));
+            this.preparedStatement.setString(2, Encryt.md5(new String(password)));
             this.resultSet  = this.preparedStatement.executeQuery();
             if (this.resultSet.next()){
                 user.setId(this.resultSet.getInt("id"));

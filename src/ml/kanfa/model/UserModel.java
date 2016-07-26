@@ -20,8 +20,8 @@ public class UserModel extends AbstractModel<User>{
             ((ILogin)observer).connect(user);
     }
 
-    public void notifyDeconnection(Observer observer, User user, boolean exit) {
-            ((ILogin)observer).deconnect(user, exit);
+    public void notifyDisconnection(Observer observer, User user, boolean exit) {
+            ((ILogin)observer).disconnect(user, exit);
     }
 
     @Override public void add(User user) {
@@ -48,7 +48,7 @@ public class UserModel extends AbstractModel<User>{
        return this.userManager.is_correct(user);
     }
 
-    public User createUser(String username, String password){
+    public User createUser(String username, char[] password){
         return this.userManager.createUser(username, password);
     }
 
