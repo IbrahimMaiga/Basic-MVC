@@ -1,6 +1,6 @@
 package ml.kanfa.manager;
 
-import ml.kanfa.annot.ManagerConnection;
+import ml.kanfa.annot.ConnectionManager;
 import ml.kanfa.manager.mysql.MySQLManagerFactory;
 import ml.kanfa.parser.YMLParser;
 import ml.kanfa.utils.KFUtils;
@@ -12,6 +12,7 @@ import java.lang.reflect.Constructor;
 /**
  * @author Kanfa.
  */
+
 public abstract class AbstractManagerFactory {
 
     public static final int MYSQL_MANAGER_FACTORY = 1;
@@ -35,7 +36,7 @@ public abstract class AbstractManagerFactory {
                 param_class = Class.forName((new YMLParser()).get(getConnectionType()));
             }
             else{
-                param_class = ((ManagerConnection)annotations[0]).value();
+                param_class = ((ConnectionManager)annotations[0]).value();
             }
             param_instance = (AbstractConnection)param_class.newInstance();
             abstractManager = (AbstractManager) constructor.newInstance(param_instance);
