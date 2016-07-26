@@ -1,4 +1,4 @@
-package ml.kanfa.views.app;
+package ml.kanfa.views.fx.app;
 
 import ml.kanfa.utils.verifier.IdGen;
 import ml.kanfa.utils.verifier.VerifierInterface;
@@ -12,11 +12,18 @@ public abstract class BaseStage extends ApplicationComponent implements Verifier
 
     public BaseStage(){
         super();
-        WindowOpenedVerifier.addOpened(this);
-        this.setOnCloseRequest(event -> WindowOpenedVerifier.dispose(this));
+        this.setOnCloseRequest(event -> close());
     }
 
     @Override public int id() {
         return IdGen.getId(this);
+    }
+
+    @Override public void addOpened() {
+        WindowOpenedVerifier.addOpened(this);
+    }
+
+    @Override public void close() {
+        WindowOpenedVerifier.dispose(this);
     }
 }

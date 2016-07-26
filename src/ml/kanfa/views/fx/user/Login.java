@@ -1,4 +1,4 @@
-package ml.kanfa.views.user;
+package ml.kanfa.views.fx.user;
 
 import javafx.application.Platform;
 import javafx.scene.Scene;

@@ -1,6 +1,6 @@
 package ml.kanfa.manager.mysql.em;
 
-import ml.kanfa.annot.ManagerConnection;
+import ml.kanfa.annot.ConnectionManager;
 import ml.kanfa.entity.UserGroup;
 import ml.kanfa.manager.mysql.MySQLManager;
 import ml.kanfa.utils.dbutils.connection.AbstractConnection;
@@ -13,7 +13,7 @@ import java.util.List;
  * @author Kanfa.
  */
 
-@ManagerConnection(UserConnection.class)
+@ConnectionManager(UserConnection.class)
 public class UserGroupManager extends MySQLManager<UserGroup> {
 
 
