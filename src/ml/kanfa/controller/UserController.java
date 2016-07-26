@@ -2,11 +2,11 @@ package ml.kanfa.controller;
 
 import ml.kanfa.entity.User;
 import ml.kanfa.model.AbstractModel;
-import ml.kanfa.model.DeconnectionType;
+import ml.kanfa.model.DisconnectionType;
 import ml.kanfa.model.Rb;
 import ml.kanfa.model.UserModel;
-import ml.kanfa.observer.ILogin;
-import ml.kanfa.views.user.LoginPane;
+import ml.kanfa.observer.IError;
+import ml.kanfa.observer.Observer;
 
 /**
  * @author Kanfa.
@@ -23,26 +23,26 @@ public class UserController extends AbstractController{
     }
 
 
-    public void control(LoginPane.ConnectAction observer, User user) {
+    public void control(Observer observer, User user) {
         if (this.userModel.is_correct(user)){
             user = this.userModel.createUser(user.getUsername(), user.getPassword());
-            this.currentUser = user;
             user.setOnline(true);
+            this.currentUser = user;
             this.userModel.update(user);
             this.userModel.notifyConnection(observer, user);
         }
         else{
-            observer.showError(this.rb.get("UserController.login_error_message"));
+            ((IError)observer).showError(this.rb.get("UserController.login_error_message"));
         }
     }
 
-    public void control(ILogin ILogin, DeconnectionType type){
+    public void control(Observer observer, DisconnectionType type){
         switch (type){
-            case DECONNECT:
-                this.userModel.notifyDeconnection(ILogin, this.currentUser, true);
+            case DISCONNECT:
+                this.userModel.notifyDisconnection(observer, this.currentUser, true);
                 break;
             case QUIT:
-                this.userModel.notifyDeconnection(ILogin, this.currentUser, false);
+                this.userModel.notifyDisconnection(observer, this.currentUser, false);
                 break;
             default:
         }
