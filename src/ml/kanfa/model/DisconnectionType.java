@@ -4,7 +4,7 @@ package ml.kanfa.model;
  * @author Kanfa.
  */
 
-public enum DeconnectionType {
-    DECONNECT,
+public enum DisconnectionType {
+    DISCONNECT,
     QUIT
 }
