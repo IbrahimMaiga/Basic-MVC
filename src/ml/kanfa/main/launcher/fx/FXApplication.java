@@ -1,14 +1,14 @@
-package ml.kanfa.main;
+package ml.kanfa.main.launcher.fx;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
-import ml.kanfa.views.user.Login;
+import ml.kanfa.views.fx.user.Login;
 
 /**
  * @author Kanfa.
  */
 
-public class Main extends Application{
+public class FXApplication extends Application{
 
 
     @Override public void start(Stage primaryStage) throws Exception {
