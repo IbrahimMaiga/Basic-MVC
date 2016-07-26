@@ -1,7 +1,7 @@
 package ml.kanfa.utils.dbutils;
 
 /**
- * @author Kanfa.
+ * @author Ibrahim Maïga.
  */
 
 public class Database {

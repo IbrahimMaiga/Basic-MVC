@@ -1,7 +1,7 @@
 package ml.kanfa.entity;
 
 /**
- * @author Kanfa.
+ * @author Ibrahim Maïga.
  */
 
 public class User {

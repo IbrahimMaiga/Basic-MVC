@@ -17,7 +17,7 @@ import java.util.List;
  * @author Kanfa.
  */
 
-@ConnectionManager(UserConnection.class)
+@ConnectionManager(value = UserConnection.class, param = "userdb")
 public class UserManager extends MySQLManager<User> {
 
     private UserGroupManager userGroupManager;
@@ -30,18 +30,20 @@ public class UserManager extends MySQLManager<User> {
     }
 
 
-    @Override public void delete(User object) {
+    @Override public boolean delete_impl(User object) {
         try{
             this.preparedStatement = this.connection.prepareStatement("DELETE FROM users WHERE id = ?");
             this.preparedStatement.setInt(1, object.getId());
             this.preparedStatement.execute();
             this.preparedStatement.close();
+            return true;
         }catch (SQLException e){
             this.debug(e);
         }
+        return false;
     }
 
-    @Override public void add(User object) {
+    @Override public boolean add_impl(User object) {
         try{
             this.preparedStatement = this.connection.prepareStatement("INSERT INTO users (username, password, online, group_id) VALUES (?, ?, ?, ?)");
             this.preparedStatement.setString(1, object.getUsername());
@@ -50,15 +52,17 @@ public class UserManager extends MySQLManager<User> {
             this.preparedStatement.setInt(4, object.getGroup().getId());
             this.preparedStatement.execute();
             this.preparedStatement.close();
+            return true;
         }catch (SQLException e){
             this.debug(e);
         }
+        return false;
     }
 
-    @Override public void update(User object) {
+    @Override public boolean update_impl(User object) {
         try{
             this.preparedStatement = this.connection.prepareStatement("UPDATE users SET username = ?, password = ?, online = ?, group_id = ? " +
-                                                                              "WHERE id = ?");
+                    "WHERE id = ?");
             this.preparedStatement.setString(1, object.getUsername());
             this.preparedStatement.setString(2, Encryt.md5(new String(object.getPassword())));
             this.preparedStatement.setBoolean(3, object.isOnline());
@@ -66,14 +70,15 @@ public class UserManager extends MySQLManager<User> {
             this.preparedStatement.setInt(5, object.getId());
             this.preparedStatement.execute();
             this.preparedStatement.close();
+            return true;
         }catch (SQLException e){
-            System.out.println(e.getErrorCode());
             JOptionPane.showMessageDialog(null, e);
             this.debug(e);
         }
+        return false;
     }
 
-    @Override public User find(int id) {
+    @Override public User find_impl(int id) {
         User user = new User();
         try{
             this.preparedStatement = this.connection.prepareStatement("SELECT * FROM users WHERE id = ?");
@@ -94,7 +99,7 @@ public class UserManager extends MySQLManager<User> {
         return user;
     }
 
-    @Override public List<User> findAll() {
+    @Override public List<User> findAll_impl() {
         List<User> users = new ArrayList<>();
         try{
             this.statement = this.connection.createStatement();
@@ -118,17 +123,24 @@ public class UserManager extends MySQLManager<User> {
 
     public boolean is_correct(User user) {
         try{
+            this.checkConnection();
             this.preparedStatement = this.connection.prepareStatement("SELECT * FROM users WHERE username = ? AND password = ?");
             this.preparedStatement.setString(1, user.getUsername());
             this.preparedStatement.setString(2, Encryt.md5(new String(user.getPassword())));
             this.resultSet = this.preparedStatement.executeQuery();
-             if (this.resultSet.next()){
-                 return true;
-             }
+            if (this.resultSet.next()) {
+                return true;
+            }
             this.preparedStatement.close();
             this.resultSet.close();
         }catch (SQLException e){
             this.debug(e);
+        }finally {
+            try {
+                this.closeConnection();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
         return false;
     }
@@ -136,6 +148,7 @@ public class UserManager extends MySQLManager<User> {
     public User createUser(String username, char[] password){
         User user = new User();
         try{
+            this.checkConnection();
             this.preparedStatement = this.connection.prepareStatement("SELECT * FROM users WHERE username = ? AND password = ?");
             this.preparedStatement.setString(1, username);
             this.preparedStatement.setString(2, Encryt.md5(new String(password)));
@@ -151,6 +164,12 @@ public class UserManager extends MySQLManager<User> {
             this.resultSet.close();
         }catch (SQLException e){
             this.debug(e);
+        }finally {
+            try {
+                this.closeConnection();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
         return user;
     }

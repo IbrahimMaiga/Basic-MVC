@@ -4,7 +4,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 
 /**
- * @author Kanfa.
+ * @author Ibrahim Maïga.
  */
 
 public class AlertBox {

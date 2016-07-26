@@ -1,16 +1,16 @@
 package ml.kanfa.service.authentication;
 
 /**
- * @author Kanfa.
+ * @author Ibrahim Maïga.
  */
 
-public class AuthenticatorImpl implements AuthenticatorService{
+public class AuthenticatorServiceImpl implements AuthenticatorService{
 
     private String login;
 
     private char[] password;
 
-    public AuthenticatorImpl(String login, char[] password){
+    public AuthenticatorServiceImpl(String login, char[] password){
         this.login = login;
         this.password = password;
     }

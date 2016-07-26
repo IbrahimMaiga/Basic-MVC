@@ -24,7 +24,7 @@ import ml.kanfa.observer.LoginStub;
 import ml.kanfa.views.fx.app.AppStage;
 
 /**
- * @author Kanfa.
+ * @author Ibrahim Maïga.
  */
 
 public class LoginPane extends BorderPane{

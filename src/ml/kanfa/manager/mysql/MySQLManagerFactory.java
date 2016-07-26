@@ -3,7 +3,7 @@ package ml.kanfa.manager.mysql;
 import ml.kanfa.manager.AbstractManagerFactory;
 
 /**
- * @author Kanfa.
+ * @author Ibrahim Maïga.
  */
 
 public class MySQLManagerFactory extends AbstractManagerFactory {

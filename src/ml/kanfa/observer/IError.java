@@ -1,7 +1,7 @@
 package ml.kanfa.observer;
 
 /**
- * @author Kanfa.
+ * @author Ibrahim Maïga.
  */
 
 public interface IError {

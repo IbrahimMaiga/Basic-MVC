@@ -4,7 +4,7 @@ import ml.kanfa.model.AbstractModel;
 import ml.kanfa.model.Rb;
 
 /**
- * @author Kanfa.
+ * @author Ibrahim Maïga.
  */
 
 public abstract class AbstractController {

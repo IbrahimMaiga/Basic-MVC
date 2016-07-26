@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author Kanfa.
+ * @author Ibrahim Maïga.
  */
 
 public abstract class AbstractModel<T> implements Observable{

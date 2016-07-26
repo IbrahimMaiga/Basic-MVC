@@ -1,3 +1,0 @@
-default:
-    name: mysql
-      class: ml.kanfa.utils.dbutils.connection.mysql.DefaultConnection

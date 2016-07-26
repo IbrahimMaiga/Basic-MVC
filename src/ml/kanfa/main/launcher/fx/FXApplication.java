@@ -5,7 +5,7 @@ import javafx.stage.Stage;
 import ml.kanfa.views.fx.user.Login;
 
 /**
- * @author Kanfa.
+ * @author Ibrahim Maïga.
  */
 
 public class FXApplication extends Application{

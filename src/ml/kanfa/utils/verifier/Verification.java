@@ -53,6 +53,7 @@ public abstract class Verification<T> {
                             type ? rb.get("App.ConfirmAlert1.disconnect_header") : rb.get("App.ConfirmAlert1.quit_header")
                     );
             if (this.isPassed(response1)){
+                System.out.println("La premiere reponse : " + this.isPassed(response1));
                 WindowOpenedVerifier.disposeAll();
                 btask = true;
             }

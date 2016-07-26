@@ -1,20 +1,17 @@
 package ml.kanfa.utils.dbutils.connection.mysql;
 
 import ml.kanfa.parser.XMLParser;
-import ml.kanfa.utils.dbutils.Database;
 
 /**
- * @author Kanfa.
+ * @author Ibrahim Maïga.
  */
 
 public class UserConnection extends AbstractMySQLConnection {
 
-
-    public UserConnection() {
-        super();
+    public UserConnection(XMLParser parser) {
+        super(parser);
     }
-
-    @Override protected XMLParser getParser() {
-        return new XMLParser(new Database("userdb"));
+    public UserConnection(){
+        super(null);
     }
 }

@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @author Kanfa.
+ * @author Ibrahim Maïga.
  */
 
 public class IdGen {

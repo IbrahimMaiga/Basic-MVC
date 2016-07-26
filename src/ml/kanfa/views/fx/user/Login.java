@@ -1,4 +1,4 @@
-package ml.kanfa.views.user;
+package ml.kanfa.views.fx.user;
 
 import javafx.application.Platform;
 import javafx.scene.Scene;
@@ -7,7 +7,7 @@ import ml.kanfa.model.Rb;
 import ml.kanfa.model.UserModel;
 
 /**
- * @author Kanfa.
+ * @author Ibrahim Maïga.
  */
 
 public class Login {

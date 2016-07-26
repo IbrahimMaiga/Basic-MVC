@@ -4,7 +4,7 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 /**
- * @author Kanfa.
+ * @author Ibrahim Maïga.
  */
 public class Rb {
 

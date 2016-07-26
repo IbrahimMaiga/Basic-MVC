@@ -1,7 +1,7 @@
 package ml.kanfa.service.authentication;
 
 /**
- * @author Kanfa.
+ * @author Ibrahim Maïga.
  */
 public interface AuthenticatorService {
 

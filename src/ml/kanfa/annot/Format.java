@@ -1,7 +1,7 @@
 package ml.kanfa.annot;
 
 /**
- * @author Kanfa.
+ * @author Ibrahim Maïga.
  */
 public @interface Format {
     String value();

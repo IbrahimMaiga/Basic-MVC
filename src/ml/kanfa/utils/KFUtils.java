@@ -1,7 +1,7 @@
 package ml.kanfa.utils;
 
 /**
- * @author Kanfa.
+ * @author Ibrahim Maïga.
  */
 public class KFUtils {
 

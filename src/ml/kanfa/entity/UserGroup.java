@@ -1,7 +1,7 @@
 package ml.kanfa.entity;
 
 /**
- * @author Kanfa.
+ * @author Ibrahim Maïga.
  */
 
 public class UserGroup {
@@ -11,9 +11,6 @@ public class UserGroup {
     private String name;
 
     public UserGroup(){}
-
-    //Getter and setter
-
 
     public int getId() {
         return id;

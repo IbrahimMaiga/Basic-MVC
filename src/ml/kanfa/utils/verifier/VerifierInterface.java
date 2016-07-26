@@ -1,7 +1,7 @@
 package ml.kanfa.utils.verifier;
 
 /**
- * @author Kanfa.
+ * @author Ibrahim Maïga.
  */
 
 public interface VerifierInterface {

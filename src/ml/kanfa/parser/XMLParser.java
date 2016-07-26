@@ -1,17 +1,16 @@
 package ml.kanfa.parser;
 
+import ml.kanfa.utils.dbutils.Database;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
-import ml.kanfa.utils.dbutils.Database;
 
 /**
  * @author Ibrahim Maïga.
  */
 
-public class XMLParser {
+public abstract class XMLParser {
 
-    private static final String CONFIG_PATH = "resource/config/database/config.xml";
     private static final String TAG_NAME = "database";
     private static final String ATTRIBUTE = "name";
 
@@ -23,14 +22,15 @@ public class XMLParser {
 
     private Element root;
 
+
     public XMLParser(Database database){
         this.database = database;
-        this.document = ml.kanfa.parser.Document.getInstance(CONFIG_PATH);
+        this.document = ml.kanfa.parser.Document.getInstance(getConfigPath());
         this.root = this.document.getDocumentElement();
         this.nodeList = this.root.getElementsByTagName(TAG_NAME);
     }
 
-    private String get(String dbname, String elementname){
+    protected String get(String dbname, String elementname){
         String value = "";
         Element database;
         for(int i = 0; i < nodeList.getLength(); i++){
@@ -43,18 +43,7 @@ public class XMLParser {
         return value;
     }
 
-    public String getHost(){
-        return this.get(this.database.getName(), "host");
-    }
-
-    public String getUsername(){
-        return this.get(this.database.getName(), "user");
-    }
-
-    public String getPassword(){
-        return this.get(this.database.getName(), "password");
-    }
-
+    protected abstract String getConfigPath();
     public Database getDatabase(){
         return this.database;
     }

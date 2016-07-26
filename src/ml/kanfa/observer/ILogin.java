@@ -3,7 +3,7 @@ package ml.kanfa.observer;
 import ml.kanfa.entity.User;
 
 /**
- * @author Kanfa.
+ * @author Ibrahim Maïga.
  */
 
 public interface ILogin extends Observer{

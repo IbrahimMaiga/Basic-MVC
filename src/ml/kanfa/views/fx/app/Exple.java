@@ -1,4 +1,4 @@
-package ml.kanfa.views.app;
+package ml.kanfa.views.fx.app;
 
 /**
  * @author Kanfa.

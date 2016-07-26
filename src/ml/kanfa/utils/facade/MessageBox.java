@@ -3,7 +3,7 @@ package ml.kanfa.utils.facade;
 import javax.swing.*;
 
 /**
- * @author Kanfa.
+ * @author Ibrahim Maïga.
  */
 public class MessageBox {
 

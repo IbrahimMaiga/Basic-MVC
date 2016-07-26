@@ -1,23 +1,29 @@
 package ml.kanfa.utils.dbutils.connection.mysql;
 
-import javafx.application.Platform;
+import ml.kanfa.parser.With_Authentication;
 import ml.kanfa.parser.XMLParser;
 import ml.kanfa.utils.dbutils.IUser;
 import ml.kanfa.utils.dbutils.connection.AbstractConnection;
+import ml.kanfa.utils.facade.MessageBox;
+import ml.kanfa.utils.system.SystemUtils;
 
-import javax.swing.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
 /**
- * @author Kanfa.
+ * @author Ibrahim Maïga.
  */
 
 public abstract class AbstractMySQLConnection extends AbstractConnection {
 
-    AbstractMySQLConnection(){
+    private static final String HOST = "host";
+    private static final String USER = "user";
+    private static final String PASS = "password";
+
+    AbstractMySQLConnection(XMLParser parser){
         super();
+        this.parser = parser;
     }
 
 
@@ -26,18 +32,18 @@ public abstract class AbstractMySQLConnection extends AbstractConnection {
     }
 
     @Override protected void displayError() {
+        MessageBox.showDialogBox("Impossible de se connecter à la base de données");
+        SystemUtils.exit();
         if ((this instanceof IUser) && !this.fistConnection){
-
         }
     }
 
     @Override protected Connection getDriverManagerConnection() throws SQLException {
         return DriverManager.getConnection(
-                getParser().getHost(),
-                getParser().getUsername(),
-                getParser().getPassword()
+                ((With_Authentication)parser).get(HOST),
+                ((With_Authentication)parser).get(USER),
+                ((With_Authentication)parser).get(PASS)
         );
     }
 
-    protected abstract XMLParser getParser();
 }

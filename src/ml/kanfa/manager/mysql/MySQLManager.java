@@ -7,12 +7,28 @@ import ml.kanfa.utils.dbutils.connection.AbstractConnection;
 import java.io.IOException;
 import java.net.Socket;
 import java.sql.*;
+import java.util.Properties;
 
 /**
- * @author Kanfa.
+ * @author Ibrahim Maïga.
  */
 
 public abstract class MySQLManager<T> extends AbstractManager<T> {
+
+    private static String HOST;
+    private static int PORT;
+    private static final String PROPERTY_PATH = "/ml/kanfa/config/sconfig.properties";
+
+    static {
+        try {
+            Properties properties = new Properties();
+            properties.load(MySQLManager.class.getResourceAsStream(PROPERTY_PATH));
+            HOST = (String)properties.get("host");
+            PORT = Integer.parseInt(String.valueOf(properties.get("port")));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     protected boolean dev = true;
 
@@ -20,17 +36,8 @@ public abstract class MySQLManager<T> extends AbstractManager<T> {
 
     private boolean canReload = false;
 
-    private static final String HOST = "127.0.0.1" ;
-    private static final int PORT = 80;
-
-    protected PreparedStatement preparedStatement;
-    protected Statement statement;
-    protected ResultSet resultSet;
-    private AbstractConnection abstractConnection;
-
     public MySQLManager(AbstractConnection abstractConnection){
-        this.abstractConnection = abstractConnection;
-        this.connection = this.abstractConnection.getConnection();
+        super(abstractConnection);
     }
 
     protected void debug(SQLException e){

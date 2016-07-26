@@ -1,15 +1,11 @@
 package ml.kanfa.parser;
 
-import org.xml.sax.SAXException;
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
-import java.io.IOException;
 
 /**
- * @author Kanfa.
+ * @author Ibrahim Maïga.
  */
 
 public class Document {
@@ -27,14 +23,10 @@ public class Document {
         try {
             builder = factory.newDocumentBuilder();
             if(document == null && !currentPath.contains(path)) {
-                document = builder.parse(new File(path));
+                document = builder.parse(new File(Document.class.getResource(path).toURI()));
                 currentPath = document.getBaseURI();
             }
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();
-        } catch (SAXException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return document;

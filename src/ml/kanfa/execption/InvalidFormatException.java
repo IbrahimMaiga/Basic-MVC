@@ -1,7 +1,7 @@
 package ml.kanfa.execption;
 
 /**
- * @author Kanfa.
+ * @author Ibrahim Maïga.
  */
 
 public class InvalidFormatException extends Exception{

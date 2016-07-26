@@ -4,7 +4,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 /**
- * @author Kanfa.
+ * @author Ibrahim Maïga.
  */
 
 public class Encryt {

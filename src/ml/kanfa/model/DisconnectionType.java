@@ -1,7 +1,7 @@
 package ml.kanfa.model;
 
 /**
- * @author Kanfa.
+ * @author Ibrahim Maïga.
  */
 
 public enum DisconnectionType {

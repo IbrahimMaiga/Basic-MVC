@@ -14,7 +14,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 /**
- * @author Kanfa.
+ * @author Ibrahim Maïga.
  */
 public class LoginFrame extends ApplicationComponent{
 

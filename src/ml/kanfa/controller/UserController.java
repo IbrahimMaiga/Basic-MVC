@@ -9,7 +9,7 @@ import ml.kanfa.observer.IError;
 import ml.kanfa.observer.Observer;
 
 /**
- * @author Kanfa.
+ * @author Ibrahim Maïga.
  */
 
 public class UserController extends AbstractController{

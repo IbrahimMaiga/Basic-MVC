@@ -1,6 +1,6 @@
 package ml.kanfa.manager.mysql.em;
 
-import ml.kanfa.annot.ManagerConnection;
+import ml.kanfa.annot.ConnectionManager;
 import ml.kanfa.entity.UserGroup;
 import ml.kanfa.manager.mysql.MySQLManager;
 import ml.kanfa.utils.dbutils.connection.AbstractConnection;
@@ -13,7 +13,7 @@ import java.util.List;
  * @author Kanfa.
  */
 
-@ManagerConnection(UserConnection.class)
+@ConnectionManager(value = UserConnection.class, param = "userdb")
 public class UserGroupManager extends MySQLManager<UserGroup> {
 
 
@@ -21,19 +21,23 @@ public class UserGroupManager extends MySQLManager<UserGroup> {
         super(abstractConnection);
     }
 
-    @Override public void delete(UserGroup object) {
-
+    @Override
+    protected boolean delete_impl(UserGroup object) {
+        return false;
     }
 
-    @Override public void add(UserGroup object) {
-
+    @Override
+    protected boolean add_impl(UserGroup object) {
+        return false;
     }
 
-    @Override public void update(UserGroup object) {
-
+    @Override
+    protected boolean update_impl(UserGroup object) {
+        return false;
     }
 
-    @Override public UserGroup find(int id) {
+    @Override
+    protected UserGroup find_impl(int id) {
         UserGroup group = new UserGroup();
         try{
             this.preparedStatement = this.connection.prepareStatement("SELECT gr_name FROM user_group WHERE id = ?");
@@ -51,7 +55,9 @@ public class UserGroupManager extends MySQLManager<UserGroup> {
         return group;
     }
 
-    @Override public List<UserGroup> findAll() {
+    @Override
+    protected List<UserGroup> findAll_impl() {
         return null;
     }
+
 }

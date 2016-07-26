@@ -9,7 +9,7 @@ import ml.kanfa.observer.Observer;
 import java.util.List;
 
 /**
- * @author Kanfa.
+ * @author Ibrahim Maïga.
  */
 
 public class UserModel extends AbstractModel<User>{

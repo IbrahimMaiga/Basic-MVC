@@ -1,10 +1,12 @@
 package ml.kanfa.utils.dbutils.connection;
 
+import ml.kanfa.parser.XMLParser;
+
 import java.sql.Connection;
 import java.sql.SQLException;
 
 /**
- * @author Kanfa.
+ * @author Ibrahim Maïga.
  */
 
 public abstract class AbstractConnection {
@@ -15,6 +17,7 @@ public abstract class AbstractConnection {
 
     protected boolean fistConnection;
 
+    protected XMLParser parser;
 
     public AbstractConnection(){
         try {
@@ -35,7 +38,9 @@ public abstract class AbstractConnection {
             } catch (SQLException e) {
                 this.error = true;
             }
-            if (this.error) this.displayError();
+            if (this.error){
+                this.displayError();
+            }
         }
         return this.instance;
     }
@@ -47,6 +52,10 @@ public abstract class AbstractConnection {
     private void initParams() {
         instance = null;
         error = false;
+    }
+
+    public void setParser(XMLParser parser){
+        this.parser = parser;
     }
 
     protected abstract void displayError();

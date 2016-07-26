@@ -1,10 +1,10 @@
-package ml.kanfa.views.app;
+package ml.kanfa.views.fx.app;
 
 import javafx.stage.Stage;
 import ml.kanfa.model.Rb;
 
 /**
- * @author Kanfa.
+ * @author Ibrahim Maïga.
  */
 public class ApplicationComponent extends Stage{
 
