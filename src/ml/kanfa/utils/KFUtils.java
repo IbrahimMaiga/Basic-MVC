@@ -31,12 +31,10 @@ public class KFUtils {
         int st = 0;
         char[] val = str.toCharArray();
 
-        while ((st < len) && (val[st] <= delimiter)) {
-            st++;
-        }
-        while ((st < len) && (val[len - 1] <= delimiter)) {
-            len--;
-        }
+        while ((st < len) && (val[st] == delimiter)) st++;
+
+        while ((st < len) && (val[len - 1] == delimiter)) len--;
+
         return ((st > 0) || (len < str.length())) ? str.substring(st, len) : str;
     }
 
