@@ -6,6 +6,8 @@ package ml.kanfa.utils.verifier;
 
 public interface VerifierInterface {
     int id();
+    void addOpened();
+    void close();
     default String name(){
         return this.getClass().getName().toLowerCase();
     }

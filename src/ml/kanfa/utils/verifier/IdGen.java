@@ -1,7 +1,5 @@
 package ml.kanfa.utils.verifier;
 
-import javafx.stage.Window;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,7 +15,7 @@ public class IdGen {
 
     private IdGen(){}
 
-    public static int getId(Window window){
+    public static int getId(Object window){
         String key = ((VerifierInterface)window).name();
         if (!ids.containsKey(key)){
             currentId++;
