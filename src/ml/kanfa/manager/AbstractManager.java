@@ -2,21 +2,20 @@ package ml.kanfa.manager;
 
 import ml.kanfa.utils.dbutils.connection.AbstractConnection;
 
-import java.sql.*;
-import java.util.ArrayList;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 
 /**
  * @author Ibrahim Maïga.
  */
-public abstract class AbstractManager<T> {
+public abstract class AbstractManager<T> implements Pingable{
+
+    //private static final Logger LOGGER = Logger.getLogger(AbstractManager.class.getName());
+    //protected final QueryString queryString = QueryString.getInstance();
 
     protected AbstractConnection abstractConnection;
     protected Connection connection;
-
-    protected PreparedStatement preparedStatement;
-    protected Statement statement;
-    protected ResultSet resultSet;
 
     public AbstractManager(AbstractConnection abstractConnection){
         this.abstractConnection = abstractConnection;
@@ -30,30 +29,24 @@ public abstract class AbstractManager<T> {
     protected abstract List<T> findAll_impl();
 
     public boolean delete(T object){
-        boolean result = false;
         try {
             this.checkConnection();
-            result = delete_impl(object);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }finally {
+            return delete_impl(object);
+        } finally {
             try {
                 this.closeConnection();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
-        return result;
     }
 
     public boolean add(T object){
-        boolean result = false;
+        boolean result;
         try {
             this.checkConnection();
             result = add_impl(object);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }finally {
+        } finally {
             try {
                 this.closeConnection();
             } catch (SQLException e) {
@@ -64,64 +57,76 @@ public abstract class AbstractManager<T> {
     }
 
     public boolean update(T object){
-        boolean result = false;
         try {
             this.checkConnection();
-            result = update_impl(object);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }finally {
+            return update_impl(object);
+        } finally {
             try {
                 this.closeConnection();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
-        return result;
     }
 
     public T find(int id){
-        T result = null;
         try {
             this.checkConnection();
-            result = find_impl(id);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }finally {
+            return find_impl(id);
+        } finally {
             try {
                 this.closeConnection();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
-        return result;
     }
 
     public List<T> findAll(){
-       List<T> result = new ArrayList<>();
         try {
             this.checkConnection();
-            result.addAll(findAll_impl());
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }finally {
+            return findAll_impl();
+        } finally {
             try {
                 this.closeConnection();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
-        return result;
     }
 
-    protected void checkConnection() throws SQLException {
-        if (this.connection.isClosed())
-            this.connection = this.abstractConnection.getConnection(true);
+    protected void checkConnection() {
+        try{
+            if (this.connection == null || this.connection.isClosed()){
+                this.connection = this.abstractConnection.getConnection(true);
+            }
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
     }
 
     protected void closeConnection() throws SQLException {
         if (this.connection != null){
             this.connection.close();
         }
+    }
+
+    @Override
+    public boolean ping(){
+        boolean bool = false;
+        try {
+            checkConnection();
+            if (this.connection == null) return false;
+            bool = this.connection.createStatement().execute("SELECT 1");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            try {
+                closeConnection();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return bool;
     }
 }

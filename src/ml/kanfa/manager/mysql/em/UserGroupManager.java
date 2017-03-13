@@ -6,16 +6,18 @@ import ml.kanfa.manager.mysql.MySQLManager;
 import ml.kanfa.utils.dbutils.connection.AbstractConnection;
 import ml.kanfa.utils.dbutils.connection.mysql.UserConnection;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author Kanfa.
+ * @author Ibrahimn Maïga.
  */
-
 @ConnectionManager(value = UserConnection.class, param = "userdb")
 public class UserGroupManager extends MySQLManager<UserGroup> {
-
 
     public UserGroupManager(AbstractConnection abstractConnection) {
         super(abstractConnection);
@@ -38,26 +40,51 @@ public class UserGroupManager extends MySQLManager<UserGroup> {
 
     @Override
     protected UserGroup find_impl(int id) {
-        UserGroup group = new UserGroup();
-        try{
-            this.preparedStatement = this.connection.prepareStatement("SELECT gr_name FROM user_group WHERE id = ?");
-            this.preparedStatement.setInt(1, id);
-            this.resultSet  = this.preparedStatement.executeQuery();
-            if (this.resultSet.next()){
-                group.setId(id);
-                group.setName(this.resultSet.getString("gr_name"));
+        final UserGroup group = new UserGroup();
+        ResultSet resultSet = null;
+        try(
+            final PreparedStatement preparedStatement = this.connection.prepareStatement("SELECT gr_name, gr_description FROM user_group WHERE gr_id = ?")
+        ){
+            preparedStatement.setInt(1, id);
+            resultSet  = preparedStatement.executeQuery();
+            if (resultSet.next()){
+                group.setId(id)
+                     .setName(resultSet.getString("gr_name"))
+                     .setDescription(resultSet.getString("gr_description"));
             }
-            this.preparedStatement.close();
-            this.resultSet.close();
         }catch (SQLException e){
             this.debug(e);
+        }finally {
+            try{
+                if (resultSet != null) resultSet.close();
+            }catch (SQLException e){
+                e.printStackTrace();
+            }
         }
         return group;
     }
 
     @Override
     protected List<UserGroup> findAll_impl() {
-        return null;
+        final List<UserGroup> groups = new ArrayList<>();
+        ResultSet resultSet = null;
+        try(final Statement statement = this.connection.createStatement()) {
+            resultSet = statement.executeQuery("SELECT * FROM user_group");
+            while (resultSet.next()){
+                final UserGroup userGroup = new UserGroup().setId(resultSet.getInt("gr_id"))
+                                                           .setName(resultSet.getString("gr_name"))
+                                                           .setDescription(resultSet.getString("gr_description"));
+                groups.add(userGroup);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            try {
+                if (resultSet != null) resultSet.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return groups;
     }
-
 }

@@ -5,7 +5,6 @@ import ml.kanfa.manager.AbstractManagerFactory;
 /**
  * @author Ibrahim Maïga.
  */
-
 public class MySQLManagerFactory extends AbstractManagerFactory {
 
     @Override protected String getEMPath() {
@@ -18,5 +17,9 @@ public class MySQLManagerFactory extends AbstractManagerFactory {
 
     @Override protected String getConnectionType() {
         return "mysql";
+    }
+
+    @Override protected boolean provideAuthentication() {
+        return true;
     }
 }

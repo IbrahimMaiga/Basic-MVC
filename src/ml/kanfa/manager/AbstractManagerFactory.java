@@ -3,8 +3,8 @@ package ml.kanfa.manager;
 import ml.kanfa.annot.ConnectionManager;
 import ml.kanfa.manager.mysql.MySQLManagerFactory;
 import ml.kanfa.manager.sqlite.SQLiteManagerFactory;
-import ml.kanfa.parser.ParserImpl1;
-import ml.kanfa.parser.ParserImpl2;
+import ml.kanfa.parser.NoAuthenticationParserImpl;
+import ml.kanfa.parser.WithAuthenticationParserImpl;
 import ml.kanfa.parser.XMLParser;
 import ml.kanfa.parser.YMLParser;
 import ml.kanfa.utils.KFUtils;
@@ -14,65 +14,73 @@ import ml.kanfa.utils.system.SystemUtils;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * @author Ibrahim Maïga.
  */
-
 public abstract class AbstractManagerFactory {
 
-    public static final int MYSQL_MANAGER_FACTORY = 1;
-    public static final int SQLITE_MANAGER_FACTORY = 2;
+    public enum ManagerType{
+        MYSQL, SQLITE
+    }
+
     private static final String DEFAULT_PARAM = "default";
-    private AbstractConnection param_instance = null;
+
+    //Logger
+    private static final Logger logger = Logger.getLogger(AbstractManagerFactory.class.getName());
 
     protected AbstractManagerFactory(){}
 
-    public AbstractManager getManager(final String class_name) {
-        final String format_class_name = class_name.split("_").length >= 2 ? KFUtils._camlCase(class_name)
-                                                                            : KFUtils.ucfirst(class_name);
-        final String name = getEMPath() + "." + format_class_name + getSuffix();
+    public AbstractManager getManager(final String className) {
+        final String name = getClassName(format(className));
         AbstractManager abstractManager = null;
-        final Class param_class;
+        final Class paramClass;
 
         try {
-            final Class c = Class.forName(name);
+            final Class managerClass = Class.forName(name);
             final Class[] params = new Class[]{AbstractConnection.class};
-            final Constructor constructor = c.getConstructor(params);
-            final Annotation[] annotations = c.getAnnotationsByType(ConnectionManager.class);
+            final Constructor<AbstractManager> constructor = managerClass.getConstructor(params);
+            final Annotation[] annotations = managerClass.getAnnotationsByType(ConnectionManager.class);
             String param = DEFAULT_PARAM;
             if (annotations.length == 0){
-                param_class = Class.forName((new YMLParser()).get(getConnectionType()));
+                paramClass = Class.forName((new YMLParser()).get(getConnectionType()));
             }
             else{
-                param_class = ((ConnectionManager)annotations[0]).value();
+                paramClass = ((ConnectionManager)annotations[0]).value();
                 param = ((ConnectionManager)annotations[0]).param();
             }
 
-            final XMLParser parser;
-
-            if (getConnectionType().equals("sqlite"))
-                parser = new ParserImpl2(new Database(param));
-            else
-                parser = new ParserImpl1(new Database(param));
-
-            Map<Class, Object> connectionMap = new HashMap<>();
-            connectionMap.put(XMLParser.class, parser);
-            param_instance = (AbstractConnection) SystemUtils.sharedInstance(param_class, "setParser", connectionMap);
-            abstractManager = (AbstractManager) constructor.newInstance(param_instance);
+            final AbstractConnection connection = SystemUtils.sharedConnection(paramClass, getParser(param));
+            abstractManager = constructor.newInstance(connection);
         }
-        catch (Exception e) {e.printStackTrace();}
+        catch (Exception e) {
+            logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+        }
 
         return abstractManager;
     }
 
-    public static AbstractManagerFactory getManagerFactory(int type){
+    private String getClassName(String formatClassName) {
+        return getEMPath() + "." + formatClassName + getSuffix();
+    }
+
+    private XMLParser getParser(String param) {
+        return provideAuthentication() ? new WithAuthenticationParserImpl(new Database(param))
+                                       : new NoAuthenticationParserImpl(new Database(param));
+    }
+
+    private String format(String className) {
+        return className.split("_").length >= 2 ?
+                KFUtils.camlCase(className) : KFUtils.ucFirst(className);
+    }
+
+    public static AbstractManagerFactory getManagerFactory(ManagerType type){
         switch(type){
-            case MYSQL_MANAGER_FACTORY:
+            case MYSQL:
                 return new MySQLManagerFactory();
-            case SQLITE_MANAGER_FACTORY:
+            case SQLITE:
                 return new SQLiteManagerFactory();
             default:
                 return null;
@@ -85,4 +93,5 @@ public abstract class AbstractManagerFactory {
 
     protected abstract String getConnectionType();
 
+    protected abstract boolean provideAuthentication();
 }

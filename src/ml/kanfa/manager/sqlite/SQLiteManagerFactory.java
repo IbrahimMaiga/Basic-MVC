@@ -6,6 +6,7 @@ import ml.kanfa.manager.AbstractManagerFactory;
  * @author Ibrahim Maïga.
  */
 public class SQLiteManagerFactory extends AbstractManagerFactory {
+
     @Override protected String getEMPath() {
         return "ml.kanfa.manager.sqlite.em";
     }
@@ -16,5 +17,9 @@ public class SQLiteManagerFactory extends AbstractManagerFactory {
 
     @Override protected String getConnectionType() {
         return "sqlite";
+    }
+
+    @Override protected boolean provideAuthentication() {
+        return false;
     }
 }
