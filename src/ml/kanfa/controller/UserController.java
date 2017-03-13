@@ -1,50 +1,40 @@
 package ml.kanfa.controller;
 
-import ml.kanfa.entity.User;
-import ml.kanfa.model.AbstractModel;
 import ml.kanfa.model.DisconnectionType;
 import ml.kanfa.model.Rb;
 import ml.kanfa.model.UserModel;
-import ml.kanfa.observer.IError;
 import ml.kanfa.observer.Observer;
+import ml.kanfa.model.DIC;
+import ml.kanfa.model.ContinuationAction;
+import ml.kanfa.observer.IMessage;
+import ml.kanfa.utils.Session;
 
 /**
  * @author Ibrahim Maïga.
  */
+public class UserController extends AbstractController {
 
-public class UserController extends AbstractController{
+    private final UserModel userModel;
 
-    private UserModel userModel;
-    private static User currentUser = new User();
-
-    public UserController(AbstractModel abstractModel, Rb rb) {
-        super(abstractModel, rb);
-        this.userModel = (UserModel)abstractModel;
+    public UserController(final Rb rb) {
+        super(rb);
+        this.userModel = this.dic.getModelFactory().getUserModel();
     }
 
-
-    public void control(Observer observer, User user) {
-        if (this.userModel.is_correct(user)){
-            user = this.userModel.createUser(user.getUsername(), user.getPassword());
-            user.setOnline(true);
-            this.currentUser = user;
-            this.userModel.update(user);
-            this.userModel.notifyConnection(observer, user);
-        }
-        else{
-            ((IError)observer).showError(this.rb.get("UserController.login_error_message"));
-        }
+    public void checkAuthentication(Observer observer, final String login, final char[] password) {
+        DIC.getInstance().service(login, password).setAction(new ContinuationAction() {
+            @Override
+            public void ifAction() {
+                userModel.notifyConnection(observer, Session.currentUser());
+            }
+            @Override
+            public void elseAction() {
+                ((IMessage) observer).show(rb.get("UserController.login_error_message"));
+            }
+        });
     }
 
-    public void control(Observer observer, DisconnectionType type){
-        switch (type){
-            case DISCONNECT:
-                this.userModel.notifyDisconnection(observer, this.currentUser, true);
-                break;
-            case QUIT:
-                this.userModel.notifyDisconnection(observer, this.currentUser, false);
-                break;
-            default:
-        }
+    public void closeSession(Observer observer, DisconnectionType type) {
+        this.userModel.notifyDisconnection(observer, (type == DisconnectionType.DISCONNECT));
     }
 }
