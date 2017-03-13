@@ -3,7 +3,6 @@ package ml.kanfa.observer;
 /**
  * @author Ibrahim Maïga.
  */
-
-public interface IError {
-    void showError(String message);
+public interface IMessage {
+    void show(String message);
 }
