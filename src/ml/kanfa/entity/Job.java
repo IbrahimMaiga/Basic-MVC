@@ -3,21 +3,18 @@ package ml.kanfa.entity;
 import javafx.beans.property.SimpleStringProperty;
 import ml.kanfa.api.Entity;
 
-import java.util.Objects;
-
 /**
  * @author Ibrahim Maïga.
  */
-public class UserGroup extends Entity{
+public class Job extends Entity{
 
     private int id;
     private SimpleStringProperty name;
     private SimpleStringProperty description;
 
-    public UserGroup(){
+    public Job(){
         super();
     }
-
     @Override
     public void initialise() {
         this.id = 0;
@@ -25,24 +22,24 @@ public class UserGroup extends Entity{
         this.description = new SimpleStringProperty("");
     }
 
-    public int getId() {
-        return id;
+    public int getId(){
+        return this.id;
     }
 
-    public UserGroup setId(int newId) {
+    public Job setId(int newId){
         if (newId > 0){
             this.id = newId;
         }
         return this;
     }
 
-    public String getName() {
-        return name.get();
+    public String getJobName(){
+        return this.name.get();
     }
 
-    public UserGroup setName(String newName) {
-        Objects.requireNonNull(newName);
-        this.name.set(newName);
+    public Job setJobName(String newValue){
+        //Objects.requireNonNull(newValue);
+        this.name.set(newValue);
         return this;
     }
 
@@ -50,14 +47,14 @@ public class UserGroup extends Entity{
         return this.description.get();
     }
 
-    public UserGroup setDescription(String newDescription){
-        Objects.requireNonNull(newDescription);
+    public Job setDescription(String newDescription){
+        //Objects.requireNonNull(newDescription);
         this.description.set(newDescription);
         return this;
     }
 
     @Override
     public String toString() {
-        return "[Name : " + getName()  + ")] [Description : " + getDescription() + ")]";
+        return  "[Name : " + getJobName()  + ")] [Description : " + getDescription() + ")]";
     }
 }
