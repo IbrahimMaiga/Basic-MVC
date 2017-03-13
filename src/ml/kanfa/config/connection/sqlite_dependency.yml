@@ -1,9 +1,0 @@
-dependency: parent
-    class: ml.kanfa.parser.ParserImpl2
-    param:
-        name: database
-        class: ml.kanfa.dbutils.Database
-
-dependency: database
-    param:
-        default: default

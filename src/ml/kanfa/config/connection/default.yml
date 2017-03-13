@@ -1,8 +1,8 @@
 default:
     name: mysql
-      class: ml.kanfa.utils.dbutils.connection.mysql.DefaultConnection
-      dependency-config-file: resource@config@connection@mysql_dependency.yml
+      class: ml.kanfa.ml.kanfa.utils.dbutils.connection.mysql.DefaultConnection
+      dependency-ml.kanfa.ml.kanfa.config-file: resource@ml.kanfa.ml.kanfa.config@connection@mysql_dependency.yml
     name: sqlite
-      class: ml.kanfa.utils.dbutils.connection.sqlite.DefaultConnection
-      dependency-config-file: resource@config@connection@sqlite_dependency.yml
+      class: ml.kanfa.ml.kanfa.utils.dbutils.connection.sqlite.DefaultConnection
+      dependency-ml.kanfa.ml.kanfa.config-file: resource@ml.kanfa.ml.kanfa.config@connection@sqlite_dependency.yml
 
