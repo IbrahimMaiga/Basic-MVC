@@ -9,9 +9,10 @@ import java.util.ResourceBundle;
 public class Rb {
 
     private Locale defaultLocal;
-    private ResourceBundle rb;
+    private static ResourceBundle rb;
+    private static Rb instance = new Rb();
 
-    public Rb(){
+    private Rb(){
         this.defaultLocal = Locale.FRENCH;
         this.rb  = ResourceBundle.getBundle("Application", defaultLocal);
     }
@@ -24,8 +25,8 @@ public class Rb {
      * Sets Local for resource bundle
      * @param local the target local
      */
-
-    public void setLocale(Locale local){
+    @SuppressWarnings("UnusedDeclaration")
+    public void setLocale(final Locale local){
         if (local != null && local != defaultLocal){
             defaultLocal = local;
             rb = ResourceBundle.getBundle("Application", local);
@@ -33,5 +34,13 @@ public class Rb {
         else{
             if (local == null) throw new NullPointerException(get("Rb.Locale.error_message"));
          }
+    }
+
+    public static Rb getInstance(){
+        return instance;
+    }
+
+    public static ResourceBundle getBundle(){
+        return rb;
     }
 }

@@ -5,58 +5,75 @@ import ml.kanfa.manager.AbstractManagerFactory;
 import ml.kanfa.manager.mysql.em.UserManager;
 import ml.kanfa.observer.ILogin;
 import ml.kanfa.observer.Observer;
+import ml.kanfa.service.authentication.AuthenticatorSupport;
 
 import java.util.List;
 
 /**
  * @author Ibrahim Maïga.
  */
+public class UserModel extends AbstractModel<User> implements AuthenticatorSupport, IConnect{
 
-public class UserModel extends AbstractModel<User>{
+    private static UserModel userModel = new UserModel();
 
-    private UserManager userManager = (UserManager)AbstractManagerFactory.getManagerFactory(AbstractManagerFactory.MYSQL_MANAGER_FACTORY).getManager("user");
+    private UserModel(){
+    }
+
+    public static UserModel instance(){
+        return userModel;
+    }
+
+    private final static class LazyInitialisation {
+        private static UserManager userManager = (UserManager)AbstractManagerFactory.getManagerFactory(AbstractManagerFactory.ManagerType.MYSQL).getManager("user");
+    }
+
+    @Override
+    public boolean checkAccess(String login, char[] password) {
+        return LazyInitialisation.userManager.check(login, password);
+    }
+
+    @Override
+    public boolean updateState(final User user) {
+        return LazyInitialisation.userManager.updateState(user);
+    }
 
     public void notifyConnection(Observer observer, User user) {
-            ((ILogin)observer).connect(user);
+        ((ILogin)observer).connect(user);
     }
 
-    public void notifyDisconnection(Observer observer, User user, boolean exit) {
-            ((ILogin)observer).disconnect(user, exit);
+    public void notifyDisconnection(Observer observer, boolean exit) {
+            ((ILogin)observer).disconnect(exit);
     }
 
-    @Override public void add(User user) {
-        this.userManager.add(user);
+    @Override public boolean add(User user) {
+        return LazyInitialisation.userManager.add(user);
     }
 
-    @Override public void delete(User user) {
-        this.userManager.delete(user);
+    @Override public boolean delete(User user) {
+        return LazyInitialisation.userManager.delete(user);
     }
 
-    @Override public void update(User user) {
-        this.userManager.update(user);
+    @Override public boolean update(User user) {
+        return LazyInitialisation.userManager.update(user);
     }
 
     @Override public User find(int id) {
-       return this.userManager.find(id);
+       return LazyInitialisation.userManager.find(id);
     }
 
     @Override public List<User> findAll() {
-        return this.userManager.findAll();
-    }
-
-    public boolean is_correct(User user) {
-       return this.userManager.is_correct(user);
+        return LazyInitialisation.userManager.findAll();
     }
 
     public User createUser(String username, char[] password){
-        return this.userManager.createUser(username, password);
+        return LazyInitialisation.userManager.createUser(username, password);
     }
 
     public boolean canLaunch() {
-        return this.userManager.canLaunch();
+        return LazyInitialisation.userManager.canLaunch();
     }
 
     public boolean isFailed(){
-        return this.userManager.isFailed();
+        return LazyInitialisation.userManager.isFailed();
     }
 }
