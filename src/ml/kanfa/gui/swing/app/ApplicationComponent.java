@@ -1,4 +1,4 @@
-package ml.kanfa.views.swing.app;
+package ml.kanfa.gui.swing.app;
 
 import ml.kanfa.model.Rb;
 
@@ -16,6 +16,6 @@ public abstract class ApplicationComponent extends JFrame{
     }
 
     public ApplicationComponent(){
-        this(new Rb());
+        this(Rb.getInstance());
     }
 }

@@ -1,12 +1,13 @@
-package ml.kanfa.views.swing.app;
+package ml.kanfa.gui.swing.app;
 
 import ml.kanfa.controller.UserController;
 import ml.kanfa.entity.User;
+import ml.kanfa.gui.swing.user.LoginFrame;
 import ml.kanfa.model.DisconnectionType;
 import ml.kanfa.model.UserModel;
 import ml.kanfa.observer.LoginStub;
+import ml.kanfa.utils.Session;
 import ml.kanfa.utils.verifier.Verification;
-import ml.kanfa.views.swing.user.LoginFrame;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,8 +16,7 @@ import java.awt.event.KeyEvent;
 /**
  * @author Ibrahim Maïga.
  */
-
-public class AppWindow extends ApplicationComponent{
+public class AppWindow extends ApplicationComponent {
 
     private Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
     private User user;
@@ -29,7 +29,7 @@ public class AppWindow extends ApplicationComponent{
         this.user = user;
         this.userModel = userModel;
         this.userModel.addObserver((this.disconnectAction = new DisconnectAction()));
-        this.userController = new UserController(this.userModel, this.rb);
+        this.userController = new UserController(this.rb);
         this.setTitle(this.rb.get("App.Window_Title"));
         this.setSize(dim.width, dim.height - 45);
         this.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -60,11 +60,11 @@ public class AppWindow extends ApplicationComponent{
         menuBar.add(file);
 
         disconnect.addActionListener(
-                e -> this.userController.control(this.disconnectAction, DisconnectionType.DISCONNECT)
+                e -> this.userController.closeSession(this.disconnectAction, DisconnectionType.DISCONNECT)
         );
 
         quit.addActionListener(
-                e -> this.userController.control(this.disconnectAction, DisconnectionType.QUIT)
+                e -> this.userController.closeSession(this.disconnectAction, DisconnectionType.QUIT)
         );
 
         this.setJMenuBar(menuBar);
@@ -72,13 +72,12 @@ public class AppWindow extends ApplicationComponent{
 
     private final class DisconnectAction extends LoginStub{
 
-        @Override public void disconnect(User currentUser, boolean type) {
-            user = currentUser;
+        @Override public void disconnect(boolean type) {
             Verification<Integer> verification = new Verification(rb, type, JOptionPane.YES_OPTION) {
                 @Override public void executeAction(boolean type) {
                     if (!userModel.isFailed()) {
-                        user.setOnline(false);
-                        userModel.update(user);
+                        Session.currentUser().setOnline(false);
+                        userModel.update(Session.currentUser());
                         if (type) {
                             AppWindow.this.dispose();
                             SwingUtilities.invokeLater
@@ -94,8 +93,8 @@ public class AppWindow extends ApplicationComponent{
             verification.run();
         }
 
-        @Override public void showError(String message) {
-            super.showError(message);
+        @Override public void show(String message) {
+            super.show(message);
         }
     }
 }

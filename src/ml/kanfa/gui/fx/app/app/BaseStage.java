@@ -1,4 +1,4 @@
-package ml.kanfa.views.fx.app;
+package ml.kanfa.gui.fx.app.app;
 
 import ml.kanfa.utils.verifier.IdGen;
 import ml.kanfa.utils.verifier.VerifierInterface;
@@ -7,7 +7,6 @@ import ml.kanfa.utils.verifier.WindowOpenedVerifier;
 /**
  * @author Ibrahim Maïga.
  */
-
 public abstract class BaseStage extends ApplicationComponent implements VerifierInterface{
 
     public BaseStage(){

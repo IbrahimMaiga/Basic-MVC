@@ -1,7 +1,5 @@
-package ml.kanfa.views.fx.user;
+package ml.kanfa.gui.fx.user;
 
-import ml.kanfa.controller.UserController;
-import ml.kanfa.entity.User;
 import javafx.application.Platform;
 import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Service;
@@ -18,49 +16,39 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import ml.kanfa.controller.UserController;
+import ml.kanfa.entity.User;
+import ml.kanfa.gui.fx.app.app.AppStage;
+import ml.kanfa.model.DIC;
 import ml.kanfa.model.Rb;
-import ml.kanfa.model.UserModel;
 import ml.kanfa.observer.LoginStub;
-import ml.kanfa.views.fx.app.AppStage;
+import ml.kanfa.utils.system.SystemUtils;
 
 /**
  * @author Ibrahim Maïga.
  */
-
 public class LoginPane extends BorderPane{
 
     private ConnectAction action;
-
     private TextField loginField;
-
     private PasswordField passwordField;
-
     private Label errorLabel;
-
     private HBox box;
-
-    private Button connectButton;
-
-    private UserModel userModel;
-
     private UserController userController;
-
     private String username;
-
     private Rb rb;
+    private DIC container = DIC.getInstance();
 
     public LoginPane(String username, Rb rb){
         this.username = username;
         this.rb = rb;
-        this.userModel = new UserModel();
         this.action = new ConnectAction();
-        this.userModel.addObserver(this.action);
-        this.userController =  new UserController(this.userModel, this.rb);
+        this.userController =  new UserController(this.rb);
         this.initialize();
     }
 
     public LoginPane(){
-        this("", new Rb());
+        this("", Rb.getInstance());
     }
 
     private void initialize(){
@@ -68,7 +56,6 @@ public class LoginPane extends BorderPane{
         this.loginField = new TextField(this.username);
         this.passwordField = new PasswordField();
         this.errorLabel = new Label();
-        this.errorLabel.setBorder(new Border(new BorderStroke(Color.valueOf("#c97b7b"), BorderStrokeStyle.SOLID, new CornerRadii(5), new BorderWidths(1))));
         this.errorLabel.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(5), new Insets(1))));
         this.errorLabel.setPrefHeight(30);
         this.box = new HBox();
@@ -77,39 +64,38 @@ public class LoginPane extends BorderPane{
         this.setBottom(box);
         this.errorLabel.setTextFill(Color.RED);
         this.errorLabel.setFont(new Font("Verdana", 14));
-        this.connectButton = new Button(rb.get("Login.connectBtn.text"));
+        final Button connectButton = new Button(rb.get("Login.connectBtn.text"));
         this.loginField.setPromptText(rb.get("Login.textfield.prompt_text"));
         this.passwordField.setPromptText(rb.get("Login.password_field.prompt_text"));
         this.passwordField.disableProperty().bind(this.loginField.textProperty().isEmpty());
-        this.connectButton.disableProperty().bind(this.loginField.textProperty().isEmpty().or(this.passwordField.textProperty().isEmpty()));
-        this.connectButton.setOnMouseClicked(event -> {
+        connectButton.disableProperty().bind(this.loginField.textProperty().isEmpty().or(this.passwordField.textProperty().isEmpty()));
+        connectButton.setOnMouseClicked(event -> {
             if (event.getButton() == MouseButton.PRIMARY){
                 this.logIn();
             }
         });
 
-        this.connectButton.setOnKeyReleased(event -> {
+        connectButton.setOnKeyReleased(event -> {
             if (event.getCode() == KeyCode.ENTER){
                 this.logIn();
             }
         });
 
+        this.loginField.setPrefWidth(300);
+        this.passwordField.setPrefWidth(300);
         gridPane.add(this.loginField, 0, 0, 3, 1);
         gridPane.add(this.passwordField, 0, 1, 3, 1);
-        gridPane.add(this.connectButton, 0, 2, 2, 1);
+        gridPane.add(connectButton, 0, 2, 2, 1);
         gridPane.setVgap(5);
         gridPane.setAlignment(Pos.CENTER);
-        GridPane.setMargin(this.connectButton, new Insets(5, 0, 0, 0));
+        GridPane.setMargin(connectButton, new Insets(5, 0, 0, 0));
         this.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, new Insets(0))));
         BorderPane.setMargin(box, new Insets(0, 0, 20, 0));
         this.setCenter(gridPane);
     }
 
     private void logIn(){
-        User user = new User();
-        user.setUsername(loginField.getText());
-        user.setPassword(passwordField.getText());
-        this.userController.control(this.action, user);
+        userController.checkAuthentication(action, loginField.getText(), passwordField.getText().toCharArray());
     }
 
     public void changeFocus(){
@@ -122,15 +108,17 @@ public class LoginPane extends BorderPane{
 
     public final class ConnectAction extends LoginStub {
 
-        @Override public void connect(User user) {
+        @Override public void connect(User current) {
             close();
-            Platform.runLater(
-                    () -> new AppStage(user, userModel)
-            );
+            if (container.publisher().getErrors().isEmpty()){
+                Platform.runLater(AppStage::new);
+            }
+            else
+                SystemUtils.exit();
         }
 
-        @Override public void showError(String message) {
-            Service<Void> service = new Service<Void>() {
+        @Override public void show(String message) {
+            final Service<Void> service = new Service<Void>() {
                 @Override protected Task<Void> createTask() {
                     return new Task<Void>() {
                         @Override protected Void call() throws Exception {
@@ -163,7 +151,6 @@ public class LoginPane extends BorderPane{
                         break;
                 }
             });
-
             service.start();
         }
     }

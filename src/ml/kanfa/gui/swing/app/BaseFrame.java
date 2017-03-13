@@ -1,4 +1,4 @@
-package ml.kanfa.views.swing.app;
+package ml.kanfa.gui.swing.app;
 
 import com.sun.awt.AWTUtilities;
 import ml.kanfa.model.Rb;
@@ -19,21 +19,21 @@ public abstract class BaseFrame extends ApplicationComponent implements Verifier
     private boolean iconified;
     private int posX;
     private int posY;
-    private boolean undecore;
+    private boolean undecorated;
 
-    public BaseFrame(Rb rb, boolean undecore){
+    public BaseFrame(Rb rb, boolean undecorated){
         super(rb);
-        this.undecore = undecore;
+        this.undecorated = undecorated;
         this.setLayout(new BorderLayout());
         JPanel quitPan = new JPanel(null);
         quitPan.setOpaque(true);
         JLabel quit = new JLabel("x", JLabel.CENTER){
         };
-        quit.setFont(new Font("Verdana", java.awt.Font.BOLD, 12));
+        quit.setFont(new Font("Verdana", Font.BOLD, 12));
         quit.setPreferredSize(new Dimension(quit.getPreferredSize().height, quit.getPreferredSize().height));
         quit.setBackground(Color.RED);
         JLabel hide = new JLabel("-", JLabel.CENTER);
-        hide.setFont(new Font("Verdana", java.awt.Font.BOLD, 12));
+        hide.setFont(new Font("Verdana", Font.BOLD, 12));
         hide.setPreferredSize(new Dimension(hide.getPreferredSize().height, hide.getPreferredSize().height));
         hide.setBackground(Color.BLUE);
         quit.setBounds(this.getDimension().width - (quit.getPreferredSize().width + 1), 0, quit.getPreferredSize().width, quit.getPreferredSize().height);
@@ -129,8 +129,8 @@ public abstract class BaseFrame extends ApplicationComponent implements Verifier
             }
         };
 
-        if (this.undecore){
-            this.setUndecorated(this.undecore);
+        if (this.undecorated){
+            this.setUndecorated(this.undecorated);
             this.add(quitPan, BorderLayout.NORTH);
             this.addMouseMotionListener(mouseMotionListener);
             this.addMouseListener(mouseListener);
@@ -140,11 +140,11 @@ public abstract class BaseFrame extends ApplicationComponent implements Verifier
     }
 
     public BaseFrame(){
-        this(new Rb(), false);
+        this(Rb.getInstance(), false);
     }
 
-    public BaseFrame(boolean undecore){
-        this(new Rb(), undecore);
+    public BaseFrame(boolean undecorated){
+        this(Rb.getInstance(), undecorated);
     }
 
     protected Dimension getDimension() {

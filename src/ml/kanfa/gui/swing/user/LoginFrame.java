@@ -1,11 +1,12 @@
-package ml.kanfa.views.swing.user;
+package ml.kanfa.gui.swing.user;
 
 import ml.kanfa.controller.UserController;
 import ml.kanfa.entity.User;
+import ml.kanfa.gui.swing.app.AppWindow;
+import ml.kanfa.gui.swing.app.ApplicationComponent;
+import ml.kanfa.model.DIC;
 import ml.kanfa.model.UserModel;
 import ml.kanfa.observer.LoginStub;
-import ml.kanfa.views.swing.app.AppWindow;
-import ml.kanfa.views.swing.app.ApplicationComponent;
 
 import javax.swing.*;
 import java.awt.*;
@@ -28,16 +29,18 @@ public class LoginFrame extends ApplicationComponent{
     private UserController userController;
     private ConnectAction connectAction;
     private String username;
+    private User user;
 
     public LoginFrame(String username){
         this.username = username;
+        this.user = new User();
         this.setTitle(this.rb.get("Login.title"));
         this.setResizable(false);
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.initComponents();
-        this.userModel = new UserModel();
+        this.userModel = DIC.getInstance().getModelFactory().getUserModel();
         this.userModel.addObserver((this.connectAction = new ConnectAction()));
-        this.userController = new UserController(this.userModel, this.rb);
+        this.userController = new UserController(this.rb);
         this.pack();
         this.setLocationRelativeTo(null);
         this.setVisible(true);
@@ -50,7 +53,7 @@ public class LoginFrame extends ApplicationComponent{
     private void initComponents(){
         this.container = new JPanel(new BorderLayout());
         this.content = new JPanel(new GridBagLayout());
-        this.loginField = new JTextField(20);
+        this.loginField = new JTextField(35);
         this.passwordField = new JPasswordField(20);
         this.connectBtn = new JButton(this.rb.get("Login.connectBtn.text"));
         this.showPassword = new JCheckBox(this.rb.get("Login.showPass_text"));
@@ -67,6 +70,7 @@ public class LoginFrame extends ApplicationComponent{
         this.content.add(this.loginField, c);
         c.gridx = 0;
         c.gridy = 1;
+        c.gridwidth = 3;
         this.content.add(passwordLabel, c);
         c.gridx = 1;
         c.gridy = 1;
@@ -112,10 +116,7 @@ public class LoginFrame extends ApplicationComponent{
     }
 
     private void logIn(){
-        User user = new User();
-        user.setUsername(loginField.getText());
-        user.setPassword(new String(passwordField.getPassword()));
-        this.userController.control(this.connectAction, user);
+        this.userController.checkAuthentication(this.connectAction, this.loginField.getText(), this.passwordField.getPassword());
     }
 
     private void check(boolean isSelected, char echoChar){
@@ -129,7 +130,7 @@ public class LoginFrame extends ApplicationComponent{
             SwingUtilities.invokeLater(() -> new AppWindow(user, userModel));
         }
 
-        @Override public void showError(String message) {
+        @Override public void show(String message) {
             JOptionPane.showMessageDialog(null, message);
             connectBtn.transferFocus();
         }
