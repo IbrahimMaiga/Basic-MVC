@@ -3,7 +3,6 @@ package ml.kanfa.utils.verifier;
 /**
  * @author Ibrahim Maïga.
  */
-
 public interface VerifierInterface {
     int id();
     void addOpened();

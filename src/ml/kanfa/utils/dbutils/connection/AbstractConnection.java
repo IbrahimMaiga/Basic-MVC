@@ -8,15 +8,11 @@ import java.sql.SQLException;
 /**
  * @author Ibrahim Maïga.
  */
-
 public abstract class AbstractConnection {
 
-    private Connection instance = null;
-
+    private Connection instance;
     private boolean error;
-
     protected boolean fistConnection;
-
     protected XMLParser parser;
 
     public AbstractConnection(){
@@ -37,9 +33,7 @@ public abstract class AbstractConnection {
                 this.fistConnection = true;
             } catch (SQLException e) {
                 this.error = true;
-            }
-            if (this.error){
-                this.displayError();
+                displayError();
             }
         }
         return this.instance;

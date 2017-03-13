@@ -6,9 +6,7 @@ import java.util.Map;
 /**
  * @author Ibrahim Maïga.
  */
-
 public class IdGen {
-
 
     public static int currentId = 0;
     private static Map<String, Integer> ids = new HashMap<>();

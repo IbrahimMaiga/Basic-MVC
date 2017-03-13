@@ -8,7 +8,6 @@ import java.util.Map;
 /**
  * @author Ibrahim Maïga.
  */
-
 public class WindowOpenedVerifier {
 
     private static List<Object> openedFrames = new ArrayList<>();
@@ -27,9 +26,9 @@ public class WindowOpenedVerifier {
 
     public static void addOpened(Object window){
         if ((window instanceof javafx.stage.Window) || (window instanceof java.awt.Window)) {
-            if (window instanceof VerifierInterface) {
-                int d = ((VerifierInterface) window).id();
-                String name = ((VerifierInterface) window).name();
+            if (window instanceof ml.kanfa.utils.verifier.VerifierInterface) {
+                int d = ((ml.kanfa.utils.verifier.VerifierInterface) window).id();
+                String name = ((ml.kanfa.utils.verifier.VerifierInterface) window).name();
                 try {
                     if (referenced.containsKey(d) && !referenced.get(d).equals(name)) {
                         throw new Exception("Cette clé existe déja pour la vue " + windowMap.get(d));
@@ -48,8 +47,8 @@ public class WindowOpenedVerifier {
     }
 
     public static void dispose(Object window){
-        if (window instanceof VerifierInterface) {
-            int d = ((VerifierInterface) window).id();
+        if (window instanceof ml.kanfa.utils.verifier.VerifierInterface) {
+            int d = ((ml.kanfa.utils.verifier.VerifierInterface) window).id();
             openedFrames.remove(windowMap.get(d));
             windowMap.remove(d);
             referenced.remove(d);

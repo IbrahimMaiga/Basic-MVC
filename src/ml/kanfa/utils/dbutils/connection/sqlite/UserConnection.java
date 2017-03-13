@@ -5,7 +5,7 @@ import ml.kanfa.parser.XMLParser;
 /**
  * @author Ibrahim Maïga.
  */
-public class UserConnection extends AbstractSQLiteConnection{
+public class UserConnection extends AbstractSQLiteConnection {
 
     public UserConnection(XMLParser parser) {
         super(parser);

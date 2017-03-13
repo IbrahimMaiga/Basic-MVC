@@ -5,7 +5,6 @@ import ml.kanfa.parser.XMLParser;
 /**
  * @author Ibrahim Maïga.
  */
-
 public class UserConnection extends AbstractMySQLConnection {
 
     public UserConnection(XMLParser parser) {

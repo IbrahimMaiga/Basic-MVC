@@ -1,11 +1,9 @@
 package ml.kanfa.utils.dbutils.connection.mysql;
 
-import ml.kanfa.parser.With_Authentication;
+import ml.kanfa.parser.WithAuthentication;
 import ml.kanfa.parser.XMLParser;
-import ml.kanfa.utils.dbutils.IUser;
+import ml.kanfa.utils.Publisher;
 import ml.kanfa.utils.dbutils.connection.AbstractConnection;
-import ml.kanfa.utils.facade.MessageBox;
-import ml.kanfa.utils.system.SystemUtils;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -14,7 +12,6 @@ import java.sql.SQLException;
 /**
  * @author Ibrahim Maïga.
  */
-
 public abstract class AbstractMySQLConnection extends AbstractConnection {
 
     private static final String HOST = "host";
@@ -32,17 +29,19 @@ public abstract class AbstractMySQLConnection extends AbstractConnection {
     }
 
     @Override protected void displayError() {
-        MessageBox.showDialogBox("Impossible de se connecter à la base de données");
-        SystemUtils.exit();
-        if ((this instanceof IUser) && !this.fistConnection){
-        }
+//        MessageBox.showDialogBox("Impossible de se connecter à la base de données");
+//        SystemUtils.exit();²
+//        if ((this instanceof IUser) && !this.fistConnection){
+//        }
+        Publisher publisher = Publisher.instance();
+        publisher.publish(Publisher.CONNECTION_ERROR);
     }
 
     @Override protected Connection getDriverManagerConnection() throws SQLException {
         return DriverManager.getConnection(
-                ((With_Authentication)parser).get(HOST),
-                ((With_Authentication)parser).get(USER),
-                ((With_Authentication)parser).get(PASS)
+                ((WithAuthentication) parser).get(HOST),
+                ((WithAuthentication) parser).get(USER),
+                ((WithAuthentication) parser).get(PASS)
         );
     }
 

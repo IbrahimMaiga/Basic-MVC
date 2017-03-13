@@ -3,7 +3,6 @@ package ml.kanfa.utils.dbutils;
 /**
  * @author Ibrahim Maïga.
  */
-
 public class Database {
 
     private String name;
