@@ -5,9 +5,9 @@ import ml.kanfa.utils.dbutils.Database;
 /**
  * @author Ibrahim Maïga.
  */
-public class ParserImpl1 extends XMLParser implements With_Authentication {
+public class WithAuthenticationParserImpl extends ml.kanfa.parser.XMLParser implements ml.kanfa.parser.WithAuthentication {
 
-    public ParserImpl1(Database database) {
+    public WithAuthenticationParserImpl(Database database) {
         super(database);
     }
 
@@ -16,6 +16,6 @@ public class ParserImpl1 extends XMLParser implements With_Authentication {
     }
 
     @Override public String getConfigPath() {
-        return With_Authentication.CONFIG_PATH;
+        return WithAuthentication.CONFIG_PATH;
     }
 }

@@ -3,10 +3,7 @@ package ml.kanfa.parser;
 
 import ml.kanfa.execption.InvalidFormatException;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+import java.io.*;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,7 +14,6 @@ import java.util.regex.Pattern;
 /**
  * @author Ibrahim Maïga.
  */
-
 public class YMLParser {
 
     private static final String SPACES = "    ";
@@ -26,16 +22,16 @@ public class YMLParser {
     private final String CLASS = "class";
     private static final String DEFAULT_PATH = "/ml/kanfa/config/connection/default.yml";
 
-    private FileReader fileReader;
+    private Reader reader;
     private BufferedReader buf;
 
-    public YMLParser(FileReader fileReader){
-        this.fileReader = fileReader;
-        this.buf = new BufferedReader(this.fileReader);
+    public YMLParser(Reader reader){
+        this.reader = reader;
+        this.buf = new BufferedReader(this.reader);
     }
 
     public YMLParser() throws FileNotFoundException, URISyntaxException {
-        this(new FileReader(new File(YMLParser.class.getResource(DEFAULT_PATH).toURI())));
+        this(new InputStreamReader(YMLParser.class.getResourceAsStream(DEFAULT_PATH)));
     }
 
     private ArrayList<ArrayList<String>> load(ArrayList<String> array){
@@ -112,6 +108,7 @@ public class YMLParser {
     public String get(String value) {
         return this.parse(value).get(CLASS);
     }
+
     public String getDependencyPath(String value){
         String str = this.parse(value).get(DCF);
         str = str.replace("@", "/");

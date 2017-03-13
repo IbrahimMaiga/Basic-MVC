@@ -5,9 +5,9 @@ import ml.kanfa.utils.dbutils.Database;
 /**
  * @author Ibrahim Maïga.
  */
-public class ParserImpl2 extends XMLParser implements No_Authentication {
+public class NoAuthenticationParserImpl extends ml.kanfa.parser.XMLParser implements ml.kanfa.parser.NoAuthentication {
 
-    public ParserImpl2(Database database) {
+    public NoAuthenticationParserImpl(Database database) {
         super(database);
     }
 
@@ -16,6 +16,6 @@ public class ParserImpl2 extends XMLParser implements No_Authentication {
     }
 
     @Override protected String getConfigPath() {
-        return No_Authentication.CONFIG_PATH;
+        return NoAuthentication.CONFIG_PATH;
     }
 }
