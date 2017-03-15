@@ -3,12 +3,14 @@ package ml.kanfa.parser;
 /**
  * @author Ibrahim Maïga.
  */
-public interface NoAuthentication {
+public interface NoAuthentication extends ParserInterface{
 
     /**
      * No Authentication parser config path
      */
-    String CONFIG_PATH = "/ml/kanfa/database/na-config.xml";
-
     String get();
+
+    default String getPath(){
+        return getProperties().getProperty("no_auth");
+    }
 }

@@ -16,6 +16,6 @@ public class WithAuthenticationParserImpl extends ml.kanfa.parser.XMLParser impl
     }
 
     @Override public String getConfigPath() {
-        return WithAuthentication.CONFIG_PATH;
+        return getPath();
     }
 }

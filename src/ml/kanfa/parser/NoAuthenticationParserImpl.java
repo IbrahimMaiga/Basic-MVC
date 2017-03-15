@@ -16,6 +16,6 @@ public class NoAuthenticationParserImpl extends ml.kanfa.parser.XMLParser implem
     }
 
     @Override protected String getConfigPath() {
-        return NoAuthentication.CONFIG_PATH;
+        return getPath();
     }
 }
