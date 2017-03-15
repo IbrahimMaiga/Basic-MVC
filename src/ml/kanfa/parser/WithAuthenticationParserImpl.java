@@ -5,7 +5,7 @@ import ml.kanfa.utils.dbutils.Database;
 /**
  * @author Ibrahim Maïga.
  */
-public class WithAuthenticationParserImpl extends ml.kanfa.parser.XMLParser implements ml.kanfa.parser.WithAuthentication {
+public class WithAuthenticationParserImpl extends XMLParser implements WithAuthentication {
 
     public WithAuthenticationParserImpl(Database database) {
         super(database);

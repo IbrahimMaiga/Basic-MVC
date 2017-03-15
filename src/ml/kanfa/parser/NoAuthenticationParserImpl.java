@@ -5,7 +5,7 @@ import ml.kanfa.utils.dbutils.Database;
 /**
  * @author Ibrahim Maïga.
  */
-public class NoAuthenticationParserImpl extends ml.kanfa.parser.XMLParser implements ml.kanfa.parser.NoAuthentication {
+public class NoAuthenticationParserImpl extends XMLParser implements NoAuthentication {
 
     public NoAuthenticationParserImpl(Database database) {
         super(database);
