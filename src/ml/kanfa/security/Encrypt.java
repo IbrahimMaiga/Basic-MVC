@@ -8,36 +8,36 @@ import java.security.NoSuchAlgorithmException;
  */
 public class Encrypt {
 
-    private Encrypt(){}
+    private Encrypt() {}
 
     @SuppressWarnings("UnusedDeclaration")
-    public static String md5(String password){
+    public static String md5(String password) {
         return md5(password, 0xfff);
     }
 
-    public static String md5(final String password, int hex){
+    public static String md5(final String password, int hex) {
         return impl(password, "MD5", hex);
     }
 
     @SuppressWarnings("UnusedDeclaration")
-    public static String sha1(final String password){
+    public static String sha1(final String password) {
         return sha1(password, 0xffff);
     }
 
-    public static String sha1(final String password, int hex){
+    public static String sha1(final String password, int hex) {
         return impl(password, "SHA-1", hex);
     }
 
     @SuppressWarnings("UnusedDeclaration")
-    public static String sha256(String password){
+    public static String sha256(String password) {
         return sha256(password, 0xffff);
     }
 
-    private static String sha256(final String password, int hex){
+    private static String sha256(final String password, int hex) {
         return impl(password, "SHA-256", hex);
     }
 
-    private static final String impl(final String password, final String algorithm, int hex){
+    private static final String impl(final String password, final String algorithm, int hex) {
         final MessageDigest messageDigest;
         final StringBuffer buffer = new StringBuffer();
         try {
