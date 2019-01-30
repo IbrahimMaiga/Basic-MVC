@@ -24,7 +24,7 @@ public class Config {
         objectMap.put("sqlite", NoAuthenticationParserImpl.class);
     }
 
-    private Config(){
+    private Config() {
         //Don't instantiate
     }
 
