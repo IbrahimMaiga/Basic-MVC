@@ -22,7 +22,7 @@ public class Publisher {
     }*/
 
     // Only static methods
-    private Publisher(){
+    private Publisher() {
     }
 
     public void publish(String key){
